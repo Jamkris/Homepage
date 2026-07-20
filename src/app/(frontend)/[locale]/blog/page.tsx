@@ -42,10 +42,8 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-      <h1 className="font-display text-[clamp(2.5rem,7vw,5rem)] leading-none font-bold tracking-tighter uppercase">
-        {t('title')}
-        <span className="text-accent">.</span>
-      </h1>
+      <p className="text-accent text-sm font-medium tracking-wider uppercase">Blog</p>
+      <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
       <p className="text-muted mt-4 text-lg">{t('description')}</p>
 
       {posts.length === 0 ? (

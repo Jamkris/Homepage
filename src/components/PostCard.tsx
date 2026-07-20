@@ -18,12 +18,12 @@ export function PostCard({ post, locale, index }: PostCardProps) {
         className="group flex items-baseline gap-4 py-6 sm:gap-8 sm:py-8"
       >
         {index !== undefined && (
-          <span className="text-muted font-display text-sm tabular-nums">
+          <span className="text-muted text-sm tabular-nums">
             {String(index + 1).padStart(2, '0')}
           </span>
         )}
         <div className="min-w-0 flex-1">
-          <h2 className="font-display group-hover:text-accent text-xl font-semibold tracking-tight transition-[color,transform] duration-300 group-hover:translate-x-2 sm:text-3xl">
+          <h2 className="group-hover:text-accent text-xl font-semibold tracking-tight transition-[color,transform] duration-300 group-hover:translate-x-2 sm:text-3xl">
             {post.title}
           </h2>
           {post.excerpt && (
@@ -46,7 +46,7 @@ export function PostCard({ post, locale, index }: PostCardProps) {
         </div>
         <time
           dateTime={post.publishedAt ?? undefined}
-          className="text-muted font-display shrink-0 text-xs tabular-nums sm:text-sm"
+          className="text-muted shrink-0 text-xs tabular-nums sm:text-sm"
         >
           {formatDate(locale, post.publishedAt)}
         </time>

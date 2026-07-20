@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { MediaImage } from '@/components/MediaImage'
@@ -8,39 +9,50 @@ interface ProjectCardProps {
   project: Project
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export async function ProjectCard({ project }: ProjectCardProps) {
+  const t = await getTranslations('portfolio')
+
+  const year = project.startedAt ? new Date(project.startedAt).getFullYear() : null
+  const ongoing = Boolean(project.startedAt && !project.endedAt)
+
   return (
-    <article>
+    <article className="h-full">
       <Link
         href={`/portfolio/${project.slug}`}
-        className="group border-border hover:border-accent/50 block h-full overflow-hidden rounded-lg border transition-colors"
+        className="group border-border hover:border-accent/50 bg-surface/40 block h-full overflow-hidden rounded-xl border transition-colors"
       >
-        {project.coverImage && typeof project.coverImage === 'object' && (
-          <div className="bg-surface aspect-[16/9] overflow-hidden">
+        {project.coverImage && typeof project.coverImage === 'object' ? (
+          <div className="bg-surface aspect-video overflow-hidden">
             <MediaImage
               media={project.coverImage}
-              className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-              sizes="(max-width: 640px) 100vw, 50vw"
+              className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              sizes="(max-width: 640px) 100vw, 33vw"
             />
           </div>
+        ) : (
+          <div className="bg-surface text-muted/40 flex aspect-video items-center justify-center text-4xl font-bold">
+            {project.title.charAt(0)}
+          </div>
         )}
-        <div className="p-4">
-          <h3 className="font-display group-hover:text-accent text-lg font-semibold tracking-tight transition-colors">
-            {project.title}
-            <span className="ml-1.5 inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden>
-              ↗
+        <div className="p-5">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="group-hover:text-accent text-lg font-bold tracking-tight transition-colors">
+              {project.title}
+            </h3>
+            {year && <span className="text-muted shrink-0 text-sm tabular-nums">{year}</span>}
+          </div>
+          <p className="text-muted mt-1.5 line-clamp-2 text-sm">{project.summary}</p>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-accent border-accent/30 rounded-full border px-2.5 py-0.5 text-xs">
+              {t(`categories.${project.category}`)}
             </span>
-          </h3>
-          <p className="text-muted mt-1 line-clamp-2 text-sm">{project.summary}</p>
-          {project.techStack && project.techStack.length > 0 && (
-            <ul className="mt-3 flex flex-wrap gap-1.5">
-              {project.techStack.map((tech) => (
-                <li key={tech} className="bg-surface text-muted rounded px-2 py-0.5 text-xs">
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          )}
+            {ongoing && (
+              <span className="text-muted border-border flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs">
+                <span className="bg-accent size-1.5 animate-pulse rounded-full" aria-hidden />
+                {t('ongoing')}
+              </span>
+            )}
+          </div>
         </div>
       </Link>
     </article>

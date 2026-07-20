@@ -11,14 +11,23 @@
     "present": "Present"
   },
   "home": {
-    "greeting": "Hi, I'm Seunghyun Lee.",
+    "greeting": "Hello! I'm",
     "tagline": "A developer who loves building things.",
-    "featured": "Selected Work",
-    "recentPosts": "Recent Posts",
     "role": "Full-stack Developer",
     "location": "Seoul, South Korea",
     "scroll": "Scroll",
-    "index": "Index"
+    "featured": "Selected Work",
+    "featuredLabel": "Portfolio",
+    "recentPosts": "Recent Posts",
+    "recentPostsLabel": "Blog",
+    "viewWork": "See the work",
+    "aboutMe": "About me",
+    "currentlyLabel": "Currently",
+    "currently": "These days",
+    "contactLabel": "Contact",
+    "contactTitle": "Let's get in touch",
+    "contactSub": "Projects, collaborations, coffee chats — all welcome.",
+    "getInTouch": "Get in touch"
   },
   "blog": {
     "title": "Blog",
@@ -42,7 +51,8 @@
       "work": "Work",
       "opensource": "Open source",
       "personal": "Personal"
-    }
+    },
+    "ongoing": "Ongoing"
   },
   "theme": {
     "light": "Light mode",
@@ -56,8 +66,7 @@
   },
   "footer": {
     "copyright": "© {year} Jamkris. All rights reserved.",
-    "cta": "Let's talk",
-    "ctaSub": "Projects, collaborations, coffee chats — all welcome",
+    "builtWith": "Designed & built from scratch",
     "backToTop": "Back to top"
   },
   "notFound": {

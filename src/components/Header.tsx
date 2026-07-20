@@ -23,18 +23,33 @@ function NavLinks({ className }: NavLinksProps) {
   const pathname = usePathname()
 
   return (
-    <nav className={`flex items-center gap-1 ${className ?? ''}`} aria-label="Main">
-      {NAV_ITEMS.map(({ href, key }) => {
+    <nav className={`flex items-center gap-5 sm:gap-7 ${className ?? ''}`} aria-label="Main">
+      {NAV_ITEMS.map(({ href, key }, i) => {
         const isActive = pathname.startsWith(href)
+        const label = t(key)
         return (
           <Link
             key={key}
             href={href}
-            className={`hover:bg-surface rounded-md px-2.5 py-1.5 text-sm transition-colors ${
-              isActive ? 'text-foreground font-medium' : 'text-muted'
+            className={`group flex items-baseline gap-1.5 py-1.5 text-xs font-medium tracking-wider ${
+              isActive ? 'text-accent' : 'text-muted'
             }`}
           >
-            {t(key)}
+            <span className="text-accent/70 text-[10px] tabular-nums">
+              0{i + 1}
+            </span>
+            {/* rolling text hover */}
+            <span className="relative inline-block overflow-hidden">
+              <span className="block transition-transform duration-300 group-hover:-translate-y-full">
+                {label}
+              </span>
+              <span
+                className="text-accent absolute top-full left-0 block transition-transform duration-300 group-hover:-translate-y-full"
+                aria-hidden
+              >
+                {label}
+              </span>
+            </span>
           </Link>
         )
       })}
@@ -47,17 +62,20 @@ export function Header() {
     <header className="border-border/60 bg-background/80 sticky top-0 z-50 border-b backdrop-blur">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="flex h-14 items-center justify-between sm:h-16">
-          <Link href="/" className="font-display text-lg font-bold tracking-tight">
-            Jamkris<span className="text-accent">✦</span>
+          <Link href="/" className="flex items-baseline gap-2">
+            <span className="text-lg font-bold tracking-tight">Jamkris</span>
+            <span className="text-muted hidden text-[10px] tracking-[0.25em] uppercase sm:inline">
+              / Seunghyun Lee
+            </span>
           </Link>
           <div className="flex items-center gap-1">
             <NavLinks className="hidden sm:flex" />
-            <div className="bg-border mx-1.5 hidden h-4 w-px sm:block" aria-hidden />
+            <div className="bg-border mx-2 hidden h-4 w-px sm:block" aria-hidden />
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
         </div>
-        <NavLinks className="-mx-2.5 pb-2 sm:hidden" />
+        <NavLinks className="pb-2 sm:hidden" />
       </div>
     </header>
   )

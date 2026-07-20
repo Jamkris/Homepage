@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
-import { Space_Grotesk } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
@@ -15,12 +14,6 @@ import { SERVER_URL } from '@/lib/seo'
 
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css'
 import '../globals.css'
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SERVER_URL),
@@ -63,13 +56,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale)
 
   return (
-    <html lang={locale} suppressHydrationWarning className={spaceGrotesk.variable}>
+    <html lang={locale} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <NextIntlClientProvider>
             <SmoothScroll />
             <Cursor />
-            <div className="grain" aria-hidden />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

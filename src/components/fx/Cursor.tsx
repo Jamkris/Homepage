@@ -62,13 +62,13 @@ export function Cursor() {
     >
       <div
         ref={dotRef}
-        className="bg-foreground absolute top-0 left-0 size-1.5 -translate-x-full rounded-full"
-        style={{ marginLeft: '-3px', marginTop: '-3px' }}
+        className="bg-accent absolute top-0 left-0 size-2 rounded-full"
+        style={{ marginLeft: '-4px', marginTop: '-4px' }}
       />
       <div
         ref={ringRef}
-        className="border-foreground/60 absolute top-0 left-0 size-8 rounded-full border transition-[border-color]"
-        style={{ marginLeft: '-16px', marginTop: '-16px' }}
+        className="border-accent/40 absolute top-0 left-0 size-9 rounded-full border transition-[border-color]"
+        style={{ marginLeft: '-18px', marginTop: '-18px' }}
       />
     </div>
   )

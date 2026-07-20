@@ -52,10 +52,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
           />
         )}
         <div>
-          <h1 className="font-display text-[clamp(2.25rem,6vw,4.5rem)] leading-none font-bold tracking-tighter">
-            {about.name}
-            <span className="text-accent">.</span>
-          </h1>
+          <p className="text-accent text-sm font-medium tracking-wider uppercase">About Me</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{about.name}</h1>
           {about.headline && <p className="text-muted mt-3 text-lg">{about.headline}</p>}
         </div>
       </header>
@@ -70,10 +68,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
       {skills.length > 0 && (
         <section className="mt-12">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="bg-accent size-2" aria-hidden />
-            <h2 className="font-display text-muted text-sm font-medium tracking-[0.2em] uppercase">{t('skills')}</h2>
-          </div>
+          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('skills')}</h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {skills.map((skill) => (
               <li key={skill} className="bg-surface rounded-md px-3 py-1 text-sm">
@@ -86,10 +81,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
       {experiences.length > 0 && (
         <section className="mt-12">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="bg-accent size-2" aria-hidden />
-            <h2 className="font-display text-muted text-sm font-medium tracking-[0.2em] uppercase">{t('experience')}</h2>
-          </div>
+          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('experience')}</h2>
           <ol className="border-border/60 mt-6 space-y-8 border-l pl-6">
             {experiences.map((exp) => (
               <li key={exp.id ?? `${exp.company}-${exp.startDate}`} className="relative">
@@ -114,10 +106,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
       {certifications.length > 0 && (
         <section className="mt-12">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="bg-accent size-2" aria-hidden />
-            <h2 className="font-display text-muted text-sm font-medium tracking-[0.2em] uppercase">{t('certifications')}</h2>
-          </div>
+          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('certifications')}</h2>
           <ul className="mt-4 space-y-3">
             {certifications.map((cert) => (
               <li

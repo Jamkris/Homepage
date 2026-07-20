@@ -51,10 +51,8 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-      <h1 className="font-display text-[clamp(2.5rem,7vw,5rem)] leading-none font-bold tracking-tighter uppercase">
-        {t('title')}
-        <span className="text-accent">.</span>
-      </h1>
+      <p className="text-accent text-sm font-medium tracking-wider uppercase">Portfolio</p>
+      <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
       <p className="text-muted mt-4 text-lg">{t('description')}</p>
 
       {grouped.length === 0 ? (
@@ -64,12 +62,11 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
           {grouped.map(({ category, projects: categoryProjects }) => (
             <section key={category}>
               <Reveal>
-                <div className="mb-7 flex items-center gap-3">
-                  <span className="bg-accent size-2" aria-hidden />
-                  <h2 className="font-display text-muted text-sm font-medium tracking-[0.2em] uppercase">
+                <div className="mb-7 flex items-baseline gap-3">
+                  <h2 className="text-2xl font-bold tracking-tight">
                     {t(`categories.${category}`)}
                   </h2>
-                  <span className="text-muted font-display text-sm tabular-nums">
+                  <span className="text-accent text-sm tabular-nums">
                     ({categoryProjects.length})
                   </span>
                 </div>

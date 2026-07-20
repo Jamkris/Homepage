@@ -11,14 +11,23 @@
     "present": "현재"
   },
   "home": {
-    "greeting": "안녕하세요, 이승현입니다.",
+    "greeting": "안녕하세요! 저는",
     "tagline": "만드는 것을 좋아하는 개발자입니다.",
-    "featured": "대표 작업",
-    "recentPosts": "최근 글",
     "role": "풀스택 개발자",
     "location": "Seoul, South Korea",
     "scroll": "Scroll",
-    "index": "목차"
+    "featured": "대표 작업",
+    "featuredLabel": "Portfolio",
+    "recentPosts": "최근 글",
+    "recentPostsLabel": "Blog",
+    "viewWork": "작업 보기",
+    "aboutMe": "소개 보기",
+    "currentlyLabel": "Currently",
+    "currently": "지금은",
+    "contactLabel": "Contact",
+    "contactTitle": "같이 얘기해요",
+    "contactSub": "프로젝트, 협업, 커피챗 — 뭐든 환영해요.",
+    "getInTouch": "연락하기"
   },
   "blog": {
     "title": "블로그",
@@ -42,7 +51,8 @@
       "work": "회사 프로젝트",
       "opensource": "오픈소스",
       "personal": "개인 프로젝트"
-    }
+    },
+    "ongoing": "진행 중"
   },
   "theme": {
     "light": "라이트 모드",
@@ -56,8 +66,7 @@
   },
   "footer": {
     "copyright": "© {year} Jamkris. All rights reserved.",
-    "cta": "Let's talk",
-    "ctaSub": "프로젝트, 협업, 커피챗 — 뭐든 환영해요",
+    "builtWith": "Designed & built from scratch",
     "backToTop": "맨 위로"
   },
   "notFound": {
