@@ -5,9 +5,40 @@
     "about": "About",
     "portfolio": "Portfolio"
   },
+  "common": {
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "present": "Present"
+  },
   "home": {
     "greeting": "Hi, I'm Seunghyun Lee.",
-    "tagline": "A developer who loves building things."
+    "tagline": "A developer who loves building things.",
+    "featured": "Featured projects",
+    "recentPosts": "Recent posts"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Notes on things I think about and learn.",
+    "empty": "No posts yet."
+  },
+  "about": {
+    "title": "About",
+    "skills": "Skills",
+    "experience": "Experience",
+    "certifications": "Certifications",
+    "empty": "Nothing here yet. Fill in the About global in the admin panel."
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "description": "Things I have built and contributed to.",
+    "empty": "No projects yet.",
+    "techStack": "Tech stack",
+    "links": "Links",
+    "categories": {
+      "work": "Work",
+      "opensource": "Open source",
+      "personal": "Personal"
+    }
   },
   "theme": {
     "light": "Light mode",
@@ -21,5 +52,9 @@
   },
   "footer": {
     "copyright": "© {year} Jamkris. All rights reserved."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
   }
 }
