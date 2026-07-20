@@ -6,8 +6,8 @@ import { slugField } from '@/fields/slug'
 export const Posts: CollectionConfig = {
   slug: 'posts',
   labels: {
-    singular: 'Post',
-    plural: 'Posts',
+    singular: { ko: '블로그 글', en: 'Post' },
+    plural: { ko: '블로그 글', en: 'Posts' },
   },
   admin: {
     useAsTitle: 'title',
@@ -23,6 +23,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      label: { ko: '제목', en: 'Title' },
       required: true,
       localized: true,
     },
@@ -30,6 +31,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      label: { ko: '요약', en: 'Excerpt' },
       localized: true,
       admin: {
         description: '목록과 SEO 설명에 사용되는 짧은 요약',
@@ -38,17 +40,20 @@ export const Posts: CollectionConfig = {
     {
       name: 'coverImage',
       type: 'upload',
+      label: { ko: '커버 이미지', en: 'Cover image' },
       relationTo: 'media',
     },
     {
       name: 'content',
       type: 'richText',
+      label: { ko: '본문', en: 'Content' },
       required: true,
       localized: true,
     },
     {
       name: 'tags',
       type: 'text',
+      label: { ko: '태그', en: 'Tags' },
       hasMany: true,
       admin: {
         position: 'sidebar',
@@ -57,6 +62,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: { ko: '발행일', en: 'Published at' },
       admin: {
         position: 'sidebar',
         date: {

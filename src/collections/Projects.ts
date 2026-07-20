@@ -6,8 +6,8 @@ import { slugField } from '@/fields/slug'
 export const Projects: CollectionConfig = {
   slug: 'projects',
   labels: {
-    singular: 'Project',
-    plural: 'Projects',
+    singular: { ko: '프로젝트', en: 'Project' },
+    plural: { ko: '프로젝트', en: 'Projects' },
   },
   admin: {
     useAsTitle: 'title',
@@ -24,6 +24,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      label: { ko: '제목', en: 'Title' },
       required: true,
       localized: true,
     },
@@ -31,11 +32,12 @@ export const Projects: CollectionConfig = {
     {
       name: 'category',
       type: 'select',
+      label: { ko: '구분', en: 'Category' },
       required: true,
       options: [
-        { label: '개인 프로젝트', value: 'personal' },
-        { label: '오픈소스', value: 'opensource' },
-        { label: '회사 프로젝트', value: 'work' },
+        { label: { ko: '개인 프로젝트', en: 'Personal' }, value: 'personal' },
+        { label: { ko: '오픈소스', en: 'Open source' }, value: 'opensource' },
+        { label: { ko: '회사 프로젝트', en: 'Work' }, value: 'work' },
       ],
       admin: {
         position: 'sidebar',
@@ -44,6 +46,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'featured',
       type: 'checkbox',
+      label: { ko: '대표 프로젝트', en: 'Featured' },
       defaultValue: false,
       admin: {
         position: 'sidebar',
@@ -53,6 +56,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'summary',
       type: 'textarea',
+      label: { ko: '요약', en: 'Summary' },
       required: true,
       localized: true,
       admin: {
@@ -62,30 +66,36 @@ export const Projects: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      label: { ko: '상세 설명', en: 'Description' },
       localized: true,
     },
     {
       name: 'coverImage',
       type: 'upload',
+      label: { ko: '커버 이미지', en: 'Cover image' },
       relationTo: 'media',
     },
     {
       name: 'techStack',
       type: 'text',
+      label: { ko: '기술 스택', en: 'Tech stack' },
       hasMany: true,
     },
     {
       name: 'links',
       type: 'array',
+      label: { ko: '링크', en: 'Links' },
       fields: [
         {
           name: 'label',
           type: 'text',
+          label: { ko: '이름', en: 'Label' },
           required: true,
         },
         {
           name: 'url',
           type: 'text',
+          label: { ko: '주소', en: 'URL' },
           required: true,
         },
       ],
@@ -93,6 +103,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'startedAt',
       type: 'date',
+      label: { ko: '시작일', en: 'Started at' },
       admin: {
         position: 'sidebar',
       },
@@ -100,6 +111,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'endedAt',
       type: 'date',
+      label: { ko: '종료일', en: 'Ended at' },
       admin: {
         position: 'sidebar',
         description: '진행 중이면 비워두세요',

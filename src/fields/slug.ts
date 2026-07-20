@@ -10,6 +10,7 @@ const formatSlug = (value: string): string =>
 export const slugField = (): Field => ({
   name: 'slug',
   type: 'text',
+  label: { ko: '슬러그', en: 'Slug' },
   required: true,
   unique: true,
   index: true,

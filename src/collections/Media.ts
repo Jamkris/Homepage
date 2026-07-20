@@ -7,6 +7,10 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: { ko: '미디어', en: 'Media' },
+    plural: { ko: '미디어', en: 'Media' },
+  },
   access: {
     read: () => true,
   },
@@ -14,6 +18,7 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
+      label: { ko: '대체 텍스트', en: 'Alt text' },
       required: true,
     },
   ],

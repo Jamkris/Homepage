@@ -1,5 +1,7 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { en } from '@payloadcms/translations/languages/en'
+import { ko } from '@payloadcms/translations/languages/ko'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -25,6 +27,10 @@ export default buildConfig({
   },
   collections: [Users, Media, Posts, Projects],
   globals: [SiteSettings, About, Home],
+  i18n: {
+    supportedLanguages: { ko, en },
+    fallbackLanguage: 'ko',
+  },
   localization: {
     locales: [
       { label: '한국어', code: 'ko' },
