@@ -1,67 +1,52 @@
-# Payload Blank Template
+# Jamkris Homepage
 
-This template comes configured with the bare minimum to get started on anything you need.
+이승현(Jamkris)의 포트폴리오 & 블로그. Next.js 16 + Payload CMS 3 단일 앱.
 
-## Quick start
+- 공개 페이지: 홈 / 블로그 / 소개 / 포트폴리오 (`/ko`, `/en`)
+- 어드민: `/admin` — 모든 콘텐츠 관리 (Payload CMS)
+- DB: SQLite, 업로드: 로컬 파일시스템 (`MEDIA_DIR`)
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+## 개발
 
-## Quick Start - local setup
+```bash
+cp .env.example .env   # PAYLOAD_SECRET 채우기: openssl rand -hex 24
+npm install
+npm run dev            # http://localhost:3000
+```
 
-To spin up this template locally, follow these steps:
+- dev 모드는 스키마를 DB에 자동 반영(push)합니다.
+- 컬렉션/글로벌 필드를 바꾸면: `npm run generate:types`
 
-### Clone
+## i18n
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+- 라우팅: `/ko`(기본) · `/en` — UI 문자열은 `messages/*.json`
+- 콘텐츠: 어드민 우측 상단 로케일 토글로 언어별 입력. 영어가 비어 있으면 한국어로 폴백.
 
-### Development
+## 배포 (Docker)
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+스키마가 바뀐 릴리즈 전에 마이그레이션 생성 (프로덕션은 push가 아니라 마이그레이션으로 스키마 반영, 시작 시 자동 실행):
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+```bash
+npm run migrate:create <이름>
+```
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+server1 (Dockge):
 
-#### Docker (Optional)
+```bash
+docker compose up -d --build
+```
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+`compose.yaml`의 호스트 볼륨 경로(`/usb/homepage/...`)와 `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` 환경변수만 맞춰주면 됩니다. 호스트 볼륨 디렉토리는 `chown -R 1001:1001` 필요.
 
-To do so, follow these steps:
+## 구조
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
-
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+```
+src/
+├── app/(frontend)/[locale]/   # 공개 페이지
+├── app/(payload)/             # 어드민 (자동 생성)
+├── collections/               # Posts, Projects, Media, Users
+├── globals/                   # SiteSettings, About, Home
+├── i18n/                      # next-intl 라우팅/설정
+├── migrations/                # 프로덕션 DB 마이그레이션
+└── components/, lib/, fields/, access/
+```

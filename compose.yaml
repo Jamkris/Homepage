@@ -1,0 +1,18 @@
+services:
+  homepage:
+    build: .
+    # image: ghcr.io/jamkris/homepage:latest  # 레지스트리에 올려서 쓸 경우
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_URL=file:/data/db/homepage.db
+      - MEDIA_DIR=/data/media
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?openssl rand -hex 24 로 생성해서 .env에 넣으세요}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-https://jamkris.com}
+    volumes:
+      # 호스트 경로만 원하는 위치로 바꾸면 됨 (예: /usb/homepage/...)
+      # 호스트 디렉토리는 컨테이너 유저(uid 1001) 소유여야 함: chown -R 1001:1001 <경로>
+      - /usb/homepage/db:/data/db
+      - /usb/homepage/media:/data/media

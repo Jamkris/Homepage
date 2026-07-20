@@ -8,6 +8,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { migrations } from './migrations'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
@@ -49,6 +50,8 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URL || '',
     },
+    // Auto-run pending migrations on startup in production (dev uses push mode)
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [
