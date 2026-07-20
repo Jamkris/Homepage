@@ -8,15 +8,21 @@ import React from 'react'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { routing } from '@/i18n/routing'
+import { SERVER_URL } from '@/lib/seo'
 
 import '../globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SERVER_URL),
   title: {
     default: 'Jamkris',
     template: '%s | Jamkris',
   },
   description: 'Seunghyun Lee (Jamkris) — portfolio and blog',
+  openGraph: {
+    siteName: 'Jamkris',
+    type: 'website',
+  },
 }
 
 export const viewport: Viewport = {

@@ -7,6 +7,7 @@ import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
 import { formatMonth } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
+import { localeAlternates } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +19,10 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'about' })
 
-  return { title: t('title') }
+  return {
+    title: t('title'),
+    alternates: localeAlternates(locale, '/about'),
+  }
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {

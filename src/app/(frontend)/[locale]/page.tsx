@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import React from 'react'
 
@@ -6,12 +7,21 @@ import { ProjectCard } from '@/components/ProjectCard'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getPayloadClient } from '@/lib/payload'
+import { localeAlternates } from '@/lib/seo'
 import type { Project } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
 interface HomePageProps {
   params: Promise<{ locale: Locale }>
+}
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale } = await params
+
+  return {
+    alternates: localeAlternates(locale, ''),
+  }
 }
 
 export default async function HomePage({ params }: HomePageProps) {

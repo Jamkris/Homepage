@@ -5,6 +5,7 @@ import React from 'react'
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Locale } from '@/i18n/routing'
 import { getPayloadClient } from '@/lib/payload'
+import { localeAlternates } from '@/lib/seo'
 import type { Project } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: PortfolioPageProps): Promise<
   return {
     title: t('title'),
     description: t('description'),
+    alternates: localeAlternates(locale, '/portfolio'),
   }
 }
 

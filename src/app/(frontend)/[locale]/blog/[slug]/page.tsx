@@ -8,6 +8,7 @@ import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
 import { formatDate } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
+import { localeAlternates, mediaImageUrl } from '@/lib/seo'
 import type { Post } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
@@ -40,9 +41,21 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     return {}
   }
 
+  const title = post.meta?.title || post.title
+  const description = post.meta?.description || post.excerpt || undefined
+  const image = mediaImageUrl(post.meta?.image) ?? mediaImageUrl(post.coverImage)
+
   return {
-    title: post.title,
-    description: post.excerpt ?? undefined,
+    title,
+    description,
+    alternates: localeAlternates(locale, `/blog/${slug}`),
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime: post.publishedAt ?? undefined,
+      images: image ? [{ url: image }] : undefined,
+    },
   }
 }
 

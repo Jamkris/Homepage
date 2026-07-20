@@ -1,4 +1,5 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { en } from '@payloadcms/translations/languages/en'
 import { ko } from '@payloadcms/translations/languages/ko'
@@ -50,5 +51,13 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    seoPlugin({
+      collections: ['posts', 'projects'],
+      uploadsCollection: 'media',
+      tabbedUI: true,
+      generateTitle: ({ doc }) => doc?.title ?? '',
+      generateDescription: ({ doc }) => doc?.excerpt ?? doc?.summary ?? '',
+    }),
+  ],
 })

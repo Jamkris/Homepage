@@ -8,6 +8,7 @@ import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
 import { formatMonth } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
+import { localeAlternates, mediaImageUrl } from '@/lib/seo'
 import type { Project } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
@@ -40,9 +41,19 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return {}
   }
 
+  const title = project.meta?.title || project.title
+  const description = project.meta?.description || project.summary
+  const image = mediaImageUrl(project.meta?.image) ?? mediaImageUrl(project.coverImage)
+
   return {
-    title: project.title,
-    description: project.summary,
+    title,
+    description,
+    alternates: localeAlternates(locale, `/portfolio/${slug}`),
+    openGraph: {
+      title,
+      description,
+      images: image ? [{ url: image }] : undefined,
+    },
   }
 }
 
