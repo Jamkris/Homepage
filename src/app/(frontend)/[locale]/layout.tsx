@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
@@ -17,6 +17,15 @@ export const metadata: Metadata = {
     template: '%s | Jamkris',
   },
   description: 'Seunghyun Lee (Jamkris) — portfolio and blog',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fcfcfc' },
+    { media: '(prefers-color-scheme: dark)', color: '#1b1b1e' },
+  ],
 }
 
 export function generateStaticParams() {

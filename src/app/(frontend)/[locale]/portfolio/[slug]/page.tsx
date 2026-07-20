@@ -65,7 +65,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     }`
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-16">
+    <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
       <header>
         <p className="text-accent text-sm font-medium">{t(`categories.${project.category}`)}</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{project.title}</h1>

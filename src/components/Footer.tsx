@@ -21,7 +21,7 @@ export async function Footer() {
 
   return (
     <footer className="border-border/60 border-t">
-      <div className="text-muted mx-auto flex max-w-3xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm sm:flex-row">
+      <div className="text-muted mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm sm:flex-row sm:px-6">
         <p>{t('copyright', { year: new Date().getFullYear() })}</p>
         {socials.length > 0 && (
           <nav className="flex items-center gap-4" aria-label="Social links">

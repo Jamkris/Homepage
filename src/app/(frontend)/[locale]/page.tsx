@@ -42,7 +42,7 @@ export default async function HomePage({ params }: HomePageProps) {
       : { docs: [] }
 
   return (
-    <div className="mx-auto max-w-3xl px-6">
+    <div className="mx-auto max-w-5xl px-4 sm:px-6">
       <section className="py-24 sm:py-32">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
           {home.heroTitle || t('greeting')}

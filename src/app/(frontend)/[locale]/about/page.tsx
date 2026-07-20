@@ -37,7 +37,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const isEmpty = !about.bio && skills.length === 0 && experiences.length === 0
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
       <header className="flex items-center gap-6">
         {about.profileImage && typeof about.profileImage === 'object' && (
           <MediaImage

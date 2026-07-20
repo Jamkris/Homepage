@@ -47,7 +47,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
   })).filter((group) => group.projects.length > 0)
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
       <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
       <p className="text-muted mt-2">{t('description')}</p>
 
@@ -60,7 +60,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
               <h2 className="mb-5 text-xl font-semibold tracking-tight">
                 {t(`categories.${category}`)}
               </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {categoryProjects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
