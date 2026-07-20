@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "홈",
+    "blog": "블로그",
+    "about": "소개",
+    "portfolio": "포트폴리오"
+  },
+  "home": {
+    "greeting": "안녕하세요, 이승현입니다.",
+    "tagline": "만드는 것을 좋아하는 개발자입니다."
+  },
+  "theme": {
+    "light": "라이트 모드",
+    "dark": "다크 모드",
+    "toggle": "테마 전환"
+  },
+  "locale": {
+    "switch": "언어 변경",
+    "ko": "한국어",
+    "en": "English"
+  },
+  "footer": {
+    "copyright": "© {year} Jamkris. All rights reserved."
+  }
+}

@@ -19,6 +19,14 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
+  localization: {
+    locales: [
+      { label: '한국어', code: 'ko' },
+      { label: 'English', code: 'en' },
+    ],
+    defaultLocale: 'ko',
+    fallback: true,
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

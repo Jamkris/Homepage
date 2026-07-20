@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "about": "About",
+    "portfolio": "Portfolio"
+  },
+  "home": {
+    "greeting": "Hi, I'm Seunghyun Lee.",
+    "tagline": "A developer who loves building things."
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "toggle": "Toggle theme"
+  },
+  "locale": {
+    "switch": "Switch language",
+    "ko": "한국어",
+    "en": "English"
+  },
+  "footer": {
+    "copyright": "© {year} Jamkris. All rights reserved."
+  }
+}
