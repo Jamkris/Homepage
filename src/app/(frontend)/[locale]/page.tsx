@@ -86,15 +86,19 @@ export default async function HomePage({ params }: HomePageProps) {
         <div className="mx-auto grid w-full max-w-5xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_auto]">
           <div>
             <Reveal>
-              <p className="text-muted text-lg font-light sm:text-xl">{t('greeting')}</p>
+              <p className="font-mono text-muted flex items-center gap-2.5 text-xs tracking-[0.2em] uppercase">
+                <span className="bg-accent size-2 animate-pulse rounded-full" aria-hidden />
+                {t('openTo')}
+              </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <h1 className="mt-3 text-6xl leading-none font-extrabold tracking-tight text-balance uppercase sm:text-8xl">
+              <h1 className="mt-6 text-6xl leading-[0.95] font-extrabold tracking-tight text-balance uppercase sm:text-8xl">
                 {home.heroTitle || about.name}
+                <span className="text-accent">.</span>
               </h1>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="text-accent mt-6 text-sm font-medium tracking-[0.25em] uppercase">
+              <p className="font-mono text-accent mt-6 text-xs tracking-[0.2em] uppercase sm:text-sm">
                 {about.headline || t('role')}
               </p>
             </Reveal>
@@ -107,15 +111,15 @@ export default async function HomePage({ params }: HomePageProps) {
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link
                   href="/portfolio"
-                  className="bg-accent text-background rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03]"
+                  className="font-mono border-accent/50 hover:border-accent bg-accent/5 hover:bg-accent/10 rounded-lg border px-6 py-3.5 text-sm transition-colors"
                 >
                   {t('viewWork')} →
                 </Link>
                 <Link
                   href="/about"
-                  className="border-border hover:border-accent hover:text-accent rounded-full border px-6 py-3 text-sm font-medium transition-colors"
+                  className="font-mono text-muted hover:text-foreground px-3 py-3.5 text-sm transition-colors"
                 >
-                  {t('aboutMe')}
+                  {t('aboutMe')} ↗
                 </Link>
               </div>
             </Reveal>
@@ -223,19 +227,21 @@ export default async function HomePage({ params }: HomePageProps) {
 
       {/* Contact */}
       <section className="border-border border-t">
-        <div className="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-5xl px-4 py-24 text-center sm:px-6 sm:py-32">
           <Reveal>
-            <SectionHeading label={t('contactLabel')} className="[&>p]:text-center" />
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+            <p className="font-mono text-accent text-xs tracking-[0.2em] uppercase">
+              {t('contactLabel')}
+            </p>
+            <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">
               {t('contactTitle')}
             </h2>
             <p className="text-muted mx-auto mt-4 max-w-md">{t('contactSub')}</p>
             {email && (
               <a
                 href={email}
-                className="bg-accent text-background mt-8 inline-block rounded-full px-8 py-3.5 text-sm font-semibold transition-transform hover:scale-[1.03]"
+                className="font-mono border-accent/50 hover:border-accent bg-accent/5 hover:bg-accent/10 mt-9 inline-block rounded-lg border px-8 py-4 text-sm transition-colors"
               >
-                {t('getInTouch')} →
+                {t('getInTouch')} ↗
               </a>
             )}
           </Reveal>

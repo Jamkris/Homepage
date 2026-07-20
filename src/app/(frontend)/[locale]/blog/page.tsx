@@ -42,9 +42,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-      <p className="text-accent text-sm font-medium tracking-wider uppercase">Blog</p>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
-      <p className="text-muted mt-4 text-lg">{t('description')}</p>
+      <p className="eyebrow">Blog</p>
+      <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">{t('title')}</h1>
+      <p className="text-muted mt-4 max-w-xl text-lg">{t('description')}</p>
 
       {posts.length === 0 ? (
         <p className="text-muted mt-20 text-center">{t('empty')}</p>

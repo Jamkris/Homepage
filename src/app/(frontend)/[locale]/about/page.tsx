@@ -25,6 +25,12 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
   }
 }
 
+interface MetaRow {
+  label: string
+  value: string
+  href?: string
+}
+
 export default async function AboutPage({ params }: AboutPageProps) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -35,54 +41,81 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   const about = await payload.findGlobal({ slug: 'about', locale, depth: 1 })
 
-  const skills = about.skills ?? []
   const experiences = about.experiences ?? []
   const certifications = about.certifications ?? []
-  const isEmpty = !about.bio && skills.length === 0 && experiences.length === 0
+  const skillGroups = about.skillGroups ?? []
+  const flatSkills = about.skills ?? []
+  const currentJob = experiences.find((exp) => !exp.endDate)
+
+  const metaRows: MetaRow[] = [
+    about.location ? { label: t('basedIn'), value: about.location } : null,
+    currentJob
+      ? { label: t('currently'), value: `${currentJob.role} @ ${currentJob.company}` }
+      : null,
+    about.studying ? { label: t('studying'), value: about.studying } : null,
+    about.focus ? { label: t('focus'), value: about.focus } : null,
+    about.email ? { label: t('email'), value: about.email, href: `mailto:${about.email}` } : null,
+    about.phone
+      ? { label: t('phone'), value: about.phone, href: `tel:${about.phone.replace(/\s+/g, '')}` }
+      : null,
+  ].filter((row): row is MetaRow => row !== null)
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
-      <header className="flex items-center gap-6">
-        {about.profileImage && typeof about.profileImage === 'object' && (
-          <MediaImage
-            media={about.profileImage}
-            className="size-20 rounded-full object-cover sm:size-24"
-            sizes="96px"
-            priority
-          />
-        )}
+    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+      <p className="eyebrow">{t('title')}</p>
+
+      {/* Intro: photo + meta sidebar | statement + bio */}
+      <div className="mt-10 grid gap-10 lg:grid-cols-[300px_1fr] lg:gap-16">
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          {about.profileImage && typeof about.profileImage === 'object' && (
+            <div className="border-accent/25 overflow-hidden rounded-2xl border">
+              <MediaImage
+                media={about.profileImage}
+                className="aspect-[4/5] w-full object-cover"
+                sizes="300px"
+                priority
+              />
+            </div>
+          )}
+          {metaRows.length > 0 && (
+            <dl className="mt-8 space-y-4">
+              {metaRows.map((row) => (
+                <div key={row.label} className="border-border/60 border-t pt-3">
+                  <dt className="font-mono text-muted text-[11px] tracking-[0.15em] uppercase">
+                    {row.label}
+                  </dt>
+                  <dd className="mt-1 font-mono text-sm">
+                    {row.href ? (
+                      <a href={row.href} className="hover:text-accent transition-colors">
+                        {row.value}
+                      </a>
+                    ) : (
+                      row.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </aside>
+
         <div>
-          <p className="text-accent text-sm font-medium tracking-wider uppercase">About Me</p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{about.name}</h1>
-          {about.headline && <p className="text-muted mt-3 text-lg">{about.headline}</p>}
+          <h1 className="text-3xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">
+            {about.headline || about.name}
+          </h1>
+          {about.bio && (
+            <div className="mt-8">
+              <RichText data={about.bio} />
+            </div>
+          )}
         </div>
-      </header>
+      </div>
 
-      {isEmpty && <p className="text-muted mt-16 text-center">{t('empty')}</p>}
-
-      {about.bio && (
-        <section className="mt-12">
-          <RichText data={about.bio} />
-        </section>
-      )}
-
-      {skills.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('skills')}</h2>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <li key={skill} className="bg-surface rounded-md px-3 py-1 text-sm">
-                {skill}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
+      {/* Experience */}
       {experiences.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('experience')}</h2>
-          <ol className="border-border/60 mt-6 space-y-8 border-l pl-6">
+        <section className="border-border mt-20 border-t pt-14">
+          <h2 className="eyebrow">{t('experience')}</h2>
+          <ol className="border-border/60 mt-8 space-y-8 border-l pl-6">
             {experiences.map((exp) => (
               <li key={exp.id ?? `${exp.company}-${exp.startDate}`} className="relative">
                 <span className="bg-accent absolute top-1.5 -left-[27.5px] size-2 rounded-full" />
@@ -90,7 +123,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
                   <h3 className="font-semibold">
                     {exp.company} <span className="text-muted font-normal">· {exp.role}</span>
                   </h3>
-                  <p className="text-muted text-sm tabular-nums">
+                  <p className="font-mono text-muted text-sm tabular-nums">
                     {formatMonth(locale, exp.startDate)} —{' '}
                     {exp.endDate ? formatMonth(locale, exp.endDate) : tCommon('present')}
                   </p>
@@ -104,10 +137,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
         </section>
       )}
 
+      {/* Certifications */}
       {certifications.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-accent text-sm font-medium tracking-wider uppercase">{t('certifications')}</h2>
-          <ul className="mt-4 space-y-3">
+        <section className="border-border mt-16 border-t pt-14">
+          <h2 className="eyebrow">{t('certifications')}</h2>
+          <ul className="mt-8 space-y-3">
             {certifications.map((cert) => (
               <li
                 key={cert.id ?? cert.name}
@@ -129,13 +163,53 @@ export default async function AboutPage({ params }: AboutPageProps) {
                   {cert.issuer && <span className="text-muted"> · {cert.issuer}</span>}
                 </p>
                 {cert.issuedAt && (
-                  <p className="text-muted text-sm tabular-nums">
+                  <p className="font-mono text-muted text-sm tabular-nums">
                     {formatMonth(locale, cert.issuedAt)}
                   </p>
                 )}
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {/* Tools */}
+      {(skillGroups.length > 0 || flatSkills.length > 0) && (
+        <section className="border-border mt-16 border-t pt-14">
+          <h2 className="eyebrow">{t('tools')}</h2>
+          {skillGroups.length > 0 ? (
+            <div className="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {skillGroups.map((group) => (
+                <div key={group.id ?? group.category}>
+                  <h3 className="font-mono text-accent flex items-center gap-2 text-xs tracking-[0.15em] uppercase">
+                    <span className="bg-accent h-px w-4" aria-hidden />
+                    {group.category}
+                  </h3>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {(group.items ?? []).map((item) => (
+                      <li
+                        key={item}
+                        className="font-mono bg-surface border-border rounded-md border px-2.5 py-1 text-sm"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ul className="mt-8 flex flex-wrap gap-2">
+              {flatSkills.map((skill) => (
+                <li
+                  key={skill}
+                  className="font-mono bg-surface border-border rounded-md border px-2.5 py-1 text-sm"
+                >
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
     </div>

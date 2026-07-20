@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
+import { JetBrains_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
@@ -14,6 +15,12 @@ import { SERVER_URL } from '@/lib/seo'
 
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css'
 import '../globals.css'
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SERVER_URL),
@@ -56,7 +63,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale)
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={jetbrainsMono.variable}>
       <body className="flex min-h-screen flex-col">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <NextIntlClientProvider>

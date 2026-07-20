@@ -27,7 +27,8 @@
     "contactLabel": "Contact",
     "contactTitle": "Let's get in touch",
     "contactSub": "Projects, collaborations, coffee chats — all welcome.",
-    "getInTouch": "Get in touch"
+    "getInTouch": "Get in touch",
+    "openTo": "Open to new opportunities"
   },
   "blog": {
     "title": "Blog",
@@ -39,7 +40,15 @@
     "skills": "Skills",
     "experience": "Experience",
     "certifications": "Certifications",
-    "empty": "Nothing here yet. Fill in the About global in the admin panel."
+    "empty": "Nothing here yet. Fill in the About global in the admin panel.",
+    "basedIn": "Based in",
+    "currently": "Currently",
+    "studying": "Studying",
+    "focus": "Focus",
+    "email": "Email",
+    "phone": "Phone",
+    "tools": "Tools I reach for",
+    "toolsSub": "What I build with"
   },
   "portfolio": {
     "title": "Portfolio",
@@ -52,7 +61,9 @@
       "opensource": "Open source",
       "personal": "Personal"
     },
-    "ongoing": "Ongoing"
+    "ongoing": "Ongoing",
+    "caseStudy": "Case study",
+    "sectionLabel": "Projects"
   },
   "theme": {
     "light": "Light mode",

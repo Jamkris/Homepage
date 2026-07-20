@@ -27,7 +27,8 @@
     "contactLabel": "Contact",
     "contactTitle": "같이 얘기해요",
     "contactSub": "프로젝트, 협업, 커피챗 — 뭐든 환영해요.",
-    "getInTouch": "연락하기"
+    "getInTouch": "연락하기",
+    "openTo": "새로운 기회에 열려 있어요"
   },
   "blog": {
     "title": "블로그",
@@ -39,7 +40,15 @@
     "skills": "기술 스택",
     "experience": "경력",
     "certifications": "자격증",
-    "empty": "아직 내용이 없습니다. 어드민에서 소개 정보를 채워주세요."
+    "empty": "아직 내용이 없습니다. 어드민에서 소개 정보를 채워주세요.",
+    "basedIn": "거주지",
+    "currently": "현재",
+    "studying": "학력",
+    "focus": "관심 분야",
+    "email": "이메일",
+    "phone": "전화",
+    "tools": "사용하는 기술",
+    "toolsSub": "자주 손이 가는 도구들"
   },
   "portfolio": {
     "title": "포트폴리오",
@@ -52,7 +61,9 @@
       "opensource": "오픈소스",
       "personal": "개인 프로젝트"
     },
-    "ongoing": "진행 중"
+    "ongoing": "진행 중",
+    "caseStudy": "자세히 보기",
+    "sectionLabel": "Projects"
   },
   "theme": {
     "light": "라이트 모드",

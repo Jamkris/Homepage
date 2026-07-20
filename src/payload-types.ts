@@ -575,6 +575,14 @@ export interface About {
    */
   headline?: string | null;
   profileImage?: (number | null) | Media;
+  location?: string | null;
+  studying?: string | null;
+  focus?: string | null;
+  email?: string | null;
+  /**
+   * 표시할 전화번호 (선택)
+   */
+  phone?: string | null;
   bio?: {
     root: {
       type: string;
@@ -590,6 +598,19 @@ export interface About {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * 카테고리별로 묶은 기술 스택 (예: 언어 / 프론트엔드 / 백엔드 / 인프라)
+   */
+  skillGroups?:
+    | {
+        category: string;
+        items: string[];
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * 그룹을 안 쓸 때 사용하는 단순 목록
+   */
   skills?: string[] | null;
   /**
    * 경력 (최신순으로 정렬해서 입력)
@@ -670,7 +691,19 @@ export interface AboutSelect<T extends boolean = true> {
   name?: T;
   headline?: T;
   profileImage?: T;
+  location?: T;
+  studying?: T;
+  focus?: T;
+  email?: T;
+  phone?: T;
   bio?: T;
+  skillGroups?:
+    | T
+    | {
+        category?: T;
+        items?: T;
+        id?: T;
+      };
   skills?: T;
   experiences?:
     | T

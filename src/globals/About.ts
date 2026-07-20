@@ -31,16 +31,76 @@ export const About: GlobalConfig = {
       relationTo: 'media',
     },
     {
+      name: 'location',
+      type: 'text',
+      label: { ko: '거주지', en: 'Based in' },
+      localized: true,
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'studying',
+      type: 'text',
+      label: { ko: '학력/전공', en: 'Studying' },
+      localized: true,
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'focus',
+      type: 'text',
+      label: { ko: '관심 분야', en: 'Focus' },
+      localized: true,
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'email',
+      type: 'email',
+      label: { ko: '이메일', en: 'Email' },
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'phone',
+      type: 'text',
+      label: { ko: '전화번호', en: 'Phone' },
+      admin: { position: 'sidebar', description: '표시할 전화번호 (선택)' },
+    },
+    {
       name: 'bio',
       type: 'richText',
       label: { ko: '자기소개', en: 'Bio' },
       localized: true,
     },
     {
+      name: 'skillGroups',
+      type: 'array',
+      label: { ko: '기술 스택 (그룹)', en: 'Skill groups' },
+      localized: true,
+      admin: {
+        description: '카테고리별로 묶은 기술 스택 (예: 언어 / 프론트엔드 / 백엔드 / 인프라)',
+      },
+      fields: [
+        {
+          name: 'category',
+          type: 'text',
+          label: { ko: '카테고리', en: 'Category' },
+          required: true,
+        },
+        {
+          name: 'items',
+          type: 'text',
+          label: { ko: '항목', en: 'Items' },
+          hasMany: true,
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'skills',
       type: 'text',
-      label: { ko: '기술 스택', en: 'Skills' },
+      label: { ko: '기술 스택 (단일 목록)', en: 'Skills (flat)' },
       hasMany: true,
+      admin: {
+        description: '그룹을 안 쓸 때 사용하는 단순 목록',
+      },
     },
     {
       name: 'experiences',
