@@ -72,7 +72,9 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
       <header>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{post.title}</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tighter text-balance sm:text-5xl">
+          {post.title}
+        </h1>
         <div className="text-muted mt-3 flex items-center gap-3 text-sm">
           <time dateTime={post.publishedAt ?? undefined}>
             {formatDate(locale, post.publishedAt)}

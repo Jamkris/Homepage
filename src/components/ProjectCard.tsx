@@ -25,8 +25,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
         )}
         <div className="p-4">
-          <h3 className="group-hover:text-accent font-semibold tracking-tight transition-colors">
+          <h3 className="font-display group-hover:text-accent text-lg font-semibold tracking-tight transition-colors">
             {project.title}
+            <span className="ml-1.5 inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden>
+              ↗
+            </span>
           </h3>
           <p className="text-muted mt-1 line-clamp-2 text-sm">{project.summary}</p>
           {project.techStack && project.techStack.length > 0 && (

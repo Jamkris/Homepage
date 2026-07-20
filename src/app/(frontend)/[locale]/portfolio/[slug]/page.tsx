@@ -78,8 +78,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
       <header>
-        <p className="text-accent text-sm font-medium">{t(`categories.${project.category}`)}</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{project.title}</h1>
+        <p className="font-display text-accent text-xs font-medium tracking-[0.25em] uppercase sm:text-sm">
+          {t(`categories.${project.category}`)}
+        </p>
+        <h1 className="font-display mt-3 text-3xl font-bold tracking-tighter text-balance sm:text-5xl">
+          {project.title}
+        </h1>
         <p className="text-muted mt-3 text-lg">{project.summary}</p>
         {period && <p className="text-muted mt-2 text-sm tabular-nums">{period}</p>}
       </header>

@@ -47,8 +47,8 @@ export function Header() {
     <header className="border-border/60 bg-background/80 sticky top-0 z-50 border-b backdrop-blur">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="flex h-14 items-center justify-between sm:h-16">
-          <Link href="/" className="text-base font-bold tracking-tight">
-            Jamkris
+          <Link href="/" className="font-display text-lg font-bold tracking-tight">
+            Jamkris<span className="text-accent">✦</span>
           </Link>
           <div className="flex items-center gap-1">
             <NavLinks className="hidden sm:flex" />

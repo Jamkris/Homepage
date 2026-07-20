@@ -7,33 +7,55 @@ import type { Post } from '@/payload-types'
 interface PostCardProps {
   post: Post
   locale: string
+  index?: number
 }
 
-export function PostCard({ post, locale }: PostCardProps) {
+export function PostCard({ post, locale, index }: PostCardProps) {
   return (
-    <article>
-      <Link href={`/blog/${post.slug}`} className="group block py-5">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="group-hover:text-accent text-lg font-semibold tracking-tight transition-colors">
+    <article className="border-border border-t">
+      <Link
+        href={`/blog/${post.slug}`}
+        className="group flex items-baseline gap-4 py-6 sm:gap-8 sm:py-8"
+      >
+        {index !== undefined && (
+          <span className="text-muted font-display text-sm tabular-nums">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
+          <h2 className="font-display group-hover:text-accent text-xl font-semibold tracking-tight transition-[color,transform] duration-300 group-hover:translate-x-2 sm:text-3xl">
             {post.title}
           </h2>
-          <time
-            dateTime={post.publishedAt ?? undefined}
-            className="text-muted shrink-0 text-sm tabular-nums"
-          >
-            {formatDate(locale, post.publishedAt)}
-          </time>
+          {post.excerpt && (
+            <p className="text-muted mt-2 line-clamp-2 max-w-2xl text-sm sm:text-base">
+              {post.excerpt}
+            </p>
+          )}
+          {post.tags && post.tags.length > 0 && (
+            <ul className="mt-3 flex flex-wrap gap-1.5">
+              {post.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="border-border text-muted rounded-full border px-2.5 py-0.5 text-xs"
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        {post.excerpt && <p className="text-muted mt-1.5 line-clamp-2 text-sm">{post.excerpt}</p>}
-        {post.tags && post.tags.length > 0 && (
-          <ul className="mt-2.5 flex flex-wrap gap-1.5">
-            {post.tags.map((tag) => (
-              <li key={tag} className="bg-surface text-muted rounded px-2 py-0.5 text-xs">
-                {tag}
-              </li>
-            ))}
-          </ul>
-        )}
+        <time
+          dateTime={post.publishedAt ?? undefined}
+          className="text-muted font-display shrink-0 text-xs tabular-nums sm:text-sm"
+        >
+          {formatDate(locale, post.publishedAt)}
+        </time>
+        <span
+          className="text-muted group-hover:text-accent hidden transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 sm:inline"
+          aria-hidden
+        >
+          ↗
+        </span>
       </Link>
     </article>
   )

@@ -4,21 +4,22 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: oklch(99% 0 0);
-  --foreground: oklch(20% 0.01 260);
-  --muted: oklch(55% 0.01 260);
-  --surface: oklch(96.5% 0.002 260);
-  --border: oklch(91% 0.004 260);
-  --accent: oklch(55% 0.18 260);
+  /* warm paper + ink + signal orange */
+  --background: oklch(96.5% 0.012 85);
+  --foreground: oklch(18% 0.012 270);
+  --muted: oklch(46% 0.014 270);
+  --surface: oklch(92.5% 0.012 85);
+  --border: oklch(86% 0.014 85);
+  --accent: oklch(60% 0.21 35);
 }
 
 .dark {
-  --background: oklch(17% 0.01 260);
-  --foreground: oklch(93% 0.005 260);
-  --muted: oklch(65% 0.01 260);
-  --surface: oklch(22% 0.01 260);
-  --border: oklch(30% 0.01 260);
-  --accent: oklch(72% 0.14 260);
+  --background: oklch(14.5% 0.008 270);
+  --foreground: oklch(94.5% 0.012 85);
+  --muted: oklch(63% 0.012 270);
+  --surface: oklch(19.5% 0.008 270);
+  --border: oklch(27% 0.008 270);
+  --accent: oklch(69% 0.19 40);
 }
 
 @theme inline {
@@ -28,10 +29,94 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-display: var(--font-space-grotesk), 'Pretendard Variable', Pretendard, system-ui,
+    sans-serif;
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--background);
+}
+
+/* custom cursor takes over on precise pointers (frontend only) */
+@media (pointer: fine) {
+  body[data-custom-cursor] * {
+    cursor: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* film grain overlay */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.6s steps(4) infinite;
+}
+
+.dark .grain {
+  opacity: 0.07;
+}
+
+@keyframes grain-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-2%, 1%);
+  }
+  50% {
+    transform: translate(1%, -2%);
+  }
+  75% {
+    transform: translate(-1%, 2%);
+  }
+  100% {
+    transform: translate(2%, -1%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none;
+  }
+}
+
+/* outlined display text (hover fill) */
+.text-stroke {
+  -webkit-text-stroke: 1.5px var(--foreground);
+  color: transparent;
+  transition: color 0.35s ease;
+}
+
+.text-stroke:hover {
+  color: var(--foreground);
 }
