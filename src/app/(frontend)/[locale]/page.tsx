@@ -112,7 +112,7 @@ export default async function HomePage({ params }: HomePageProps) {
               </p>
             </Reveal>
             <Reveal delay={0.3}>
-              <p className="text-muted mt-5 max-w-xl text-lg">
+              <p className="text-muted mt-5 max-w-xl text-lg whitespace-pre-line">
                 {home.heroSubtitle || t('tagline')}
               </p>
             </Reveal>
