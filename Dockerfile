@@ -4,7 +4,9 @@ FROM node:22-alpine AS base
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json ./
+# .npmrc carries `legacy-peer-deps=true`; without it npm ci resolves peer deps
+# differently than the lock was generated with, and fails.
+COPY package.json package-lock.json .npmrc ./
 RUN npm ci
 
 FROM base AS builder
