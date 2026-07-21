@@ -3,6 +3,7 @@ import * as migration_20260720_071430_about_contact_skillgroups from './20260720
 import * as migration_20260721_035256_contacts_and_notifications from './20260721_035256_contacts_and_notifications';
 import * as migration_20260721_044247_cert_attachment from './20260721_044247_cert_attachment';
 import * as migration_20260721_044508_activities from './20260721_044508_activities';
+import * as migration_20260721_050000_activities_daterange_tags from './20260721_050000_activities_daterange_tags';
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20260721_044508_activities.up,
     down: migration_20260721_044508_activities.down,
     name: '20260721_044508_activities'
+  },
+  {
+    up: migration_20260721_050000_activities_daterange_tags.up,
+    down: migration_20260721_050000_activities_daterange_tags.down,
+    name: '20260721_050000_activities_daterange_tags',
   },
 ];
