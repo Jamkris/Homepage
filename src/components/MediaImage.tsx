@@ -19,7 +19,7 @@ export function MediaImage({ media, className, sizes, priority }: MediaImageProp
   return (
     <Image
       src={media.url}
-      alt={media.alt}
+      alt={media.alt ?? ''}
       width={media.width ?? 1200}
       height={media.height ?? 630}
       className={className}

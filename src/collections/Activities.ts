@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { publishedOrLoggedIn } from '@/access/publishedOrLoggedIn'
+import { slugField } from '@/fields/slug'
 
 export const Activities: CollectionConfig = {
   slug: 'activities',
@@ -27,6 +28,7 @@ export const Activities: CollectionConfig = {
       required: true,
       localized: true,
     },
+    slugField(),
     {
       name: 'type',
       type: 'select',

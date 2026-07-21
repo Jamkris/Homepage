@@ -4,6 +4,7 @@ import * as migration_20260721_035256_contacts_and_notifications from './2026072
 import * as migration_20260721_044247_cert_attachment from './20260721_044247_cert_attachment';
 import * as migration_20260721_044508_activities from './20260721_044508_activities';
 import * as migration_20260721_050000_activities_daterange_tags from './20260721_050000_activities_daterange_tags';
+import * as migration_20260721_060000_activities_slug from './20260721_060000_activities_slug';
 
 export const migrations = [
   {
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20260721_050000_activities_daterange_tags.up,
     down: migration_20260721_050000_activities_daterange_tags.down,
     name: '20260721_050000_activities_daterange_tags',
+  },
+  {
+    up: migration_20260721_060000_activities_slug.up,
+    down: migration_20260721_060000_activities_slug.down,
+    name: '20260721_060000_activities_slug',
   },
 ];

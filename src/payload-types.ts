@@ -166,7 +166,10 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * 접근성/SEO용 설명 (선택 — 나중에 채워도 됩니다)
+   */
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -310,6 +313,10 @@ export interface Project {
 export interface Activity {
   id: number;
   title: string;
+  /**
+   * URL에 사용되는 고유 식별자 (예: my-first-post)
+   */
+  slug: string;
   type: 'award' | 'activity';
   startDate?: string | null;
   /**
@@ -580,6 +587,7 @@ export interface ProjectsSelect<T extends boolean = true> {
  */
 export interface ActivitiesSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   type?: T;
   startDate?: T;
   ongoing?: T;
