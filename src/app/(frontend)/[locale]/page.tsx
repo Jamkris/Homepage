@@ -73,7 +73,15 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const currentJob = (about.experiences ?? []).find((exp) => !exp.endDate)
   const socials = settings.socials ?? []
-  const email = socials.find((social) => social.platform === 'email')?.url
+  // Prefer the About email; fall back to a mailto-style email social link
+  const socialEmail = socials.find((social) => social.platform === 'email')?.url
+  const mailto = about.email
+    ? `mailto:${about.email}`
+    : socialEmail
+      ? socialEmail.startsWith('mailto:')
+        ? socialEmail
+        : `mailto:${socialEmail}`
+      : null
 
   return (
     <div>
@@ -236,9 +244,9 @@ export default async function HomePage({ params }: HomePageProps) {
               {t('contactTitle')}
             </h2>
             <p className="text-muted mx-auto mt-4 max-w-md">{t('contactSub')}</p>
-            {email && (
+            {mailto && (
               <a
-                href={email}
+                href={mailto}
                 className="font-mono border-accent/50 hover:border-accent bg-accent/5 hover:bg-accent/10 mt-9 inline-block rounded-lg border px-8 py-4 text-sm transition-colors"
               >
                 {t('getInTouch')} ↗
