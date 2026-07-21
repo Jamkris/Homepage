@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import React from 'react'
 
+import { CertificateViewer } from '@/components/CertificateViewer'
 import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
@@ -141,34 +142,50 @@ export default async function AboutPage({ params }: AboutPageProps) {
       {certifications.length > 0 && (
         <section className="border-border mt-16 border-t pt-14">
           <h2 className="eyebrow">{t('certifications')}</h2>
-          <ul className="mt-8 space-y-3">
-            {certifications.map((cert) => (
-              <li
-                key={cert.id ?? cert.name}
-                className="flex flex-wrap items-baseline justify-between gap-2"
-              >
-                <p>
-                  {cert.url ? (
-                    <a
-                      href={cert.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-accent underline underline-offset-4 transition-colors"
-                    >
-                      {cert.name}
-                    </a>
-                  ) : (
-                    cert.name
+          <ul className="mt-8 space-y-5">
+            {certifications.map((cert) => {
+              const media =
+                cert.attachment && typeof cert.attachment === 'object' ? cert.attachment : null
+              const thumbUrl = media?.sizes?.thumbnail?.url ?? media?.url ?? null
+
+              return (
+                <li
+                  key={cert.id ?? cert.name}
+                  className="border-border/60 flex flex-wrap items-center justify-between gap-3 border-t pt-4"
+                >
+                  <div className="min-w-0">
+                    <p>
+                      {cert.url && !media ? (
+                        <a
+                          href={cert.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-accent underline underline-offset-4 transition-colors"
+                        >
+                          {cert.name}
+                        </a>
+                      ) : (
+                        cert.name
+                      )}
+                      {cert.issuer && <span className="text-muted"> · {cert.issuer}</span>}
+                    </p>
+                    {cert.issuedAt && (
+                      <p className="font-mono text-muted mt-1 text-sm tabular-nums">
+                        {formatMonth(locale, cert.issuedAt)}
+                      </p>
+                    )}
+                  </div>
+                  {media?.url && (
+                    <CertificateViewer
+                      name={cert.name}
+                      url={media.url}
+                      mimeType={media.mimeType}
+                      thumbUrl={thumbUrl}
+                    />
                   )}
-                  {cert.issuer && <span className="text-muted"> · {cert.issuer}</span>}
-                </p>
-                {cert.issuedAt && (
-                  <p className="font-mono text-muted text-sm tabular-nums">
-                    {formatMonth(locale, cert.issuedAt)}
-                  </p>
-                )}
-              </li>
-            ))}
+                </li>
+              )
+            })}
           </ul>
         </section>
       )}

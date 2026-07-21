@@ -667,7 +667,11 @@ export interface About {
         issuer?: string | null;
         issuedAt?: string | null;
         /**
-         * 증명서 링크 (선택)
+         * 이미지 또는 PDF 업로드 — 사이트에서 뷰어로 바로 열립니다
+         */
+        attachment?: (number | null) | Media;
+        /**
+         * 파일 대신 외부 링크를 쓸 때 (선택)
          */
         url?: string | null;
         id?: string | null;
@@ -775,6 +779,7 @@ export interface AboutSelect<T extends boolean = true> {
         name?: T;
         issuer?: T;
         issuedAt?: T;
+        attachment?: T;
         url?: T;
         id?: T;
       };

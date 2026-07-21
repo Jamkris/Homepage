@@ -167,11 +167,20 @@ export const About: GlobalConfig = {
           label: { ko: '취득일', en: 'Issued at' },
         },
         {
+          name: 'attachment',
+          type: 'upload',
+          label: { ko: '증명서 파일', en: 'Certificate file' },
+          relationTo: 'media',
+          admin: {
+            description: '이미지 또는 PDF 업로드 — 사이트에서 뷰어로 바로 열립니다',
+          },
+        },
+        {
           name: 'url',
           type: 'text',
-          label: { ko: '링크', en: 'URL' },
+          label: { ko: '외부 링크', en: 'External URL' },
           admin: {
-            description: '증명서 링크 (선택)',
+            description: '파일 대신 외부 링크를 쓸 때 (선택)',
           },
         },
       ],

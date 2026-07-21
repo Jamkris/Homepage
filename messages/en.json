@@ -48,7 +48,10 @@
     "email": "Email",
     "phone": "Phone",
     "tools": "Tools I reach for",
-    "toolsSub": "What I build with"
+    "toolsSub": "What I build with",
+    "viewCertificate": "View",
+    "close": "Close",
+    "download": "Download"
   },
   "portfolio": {
     "title": "Portfolio",
