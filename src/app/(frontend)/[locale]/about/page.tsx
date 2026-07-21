@@ -40,8 +40,19 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const tCommon = await getTranslations('common')
   const payload = await getPayloadClient()
 
-  const about = await payload.findGlobal({ slug: 'about', locale, depth: 1 })
+  const [about, activitiesResult] = await Promise.all([
+    payload.findGlobal({ slug: 'about', locale, depth: 1 }),
+    payload.find({
+      collection: 'activities',
+      locale,
+      depth: 1,
+      limit: 100,
+      sort: '-date',
+      where: { _status: { equals: 'published' } },
+    }),
+  ])
 
+  const activities = activitiesResult.docs
   const experiences = about.experiences ?? []
   const certifications = about.certifications ?? []
   const skillGroups = about.skillGroups ?? []
@@ -187,6 +198,61 @@ export default async function AboutPage({ params }: AboutPageProps) {
               )
             })}
           </ul>
+        </section>
+      )}
+
+      {/* Awards & Activities */}
+      {activities.length > 0 && (
+        <section className="border-border mt-16 border-t pt-14">
+          <h2 className="eyebrow">{t('awards')}</h2>
+          <div className="mt-8 space-y-10">
+            {activities.map((activity) => {
+              const media =
+                activity.attachment && typeof activity.attachment === 'object'
+                  ? activity.attachment
+                  : null
+              const thumbUrl = media?.sizes?.thumbnail?.url ?? media?.url ?? null
+
+              return (
+                <article
+                  key={activity.id}
+                  className="border-border/60 border-t pt-6 first:border-0 first:pt-0"
+                >
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="font-mono text-accent border-accent/30 rounded-full border px-2.5 py-0.5 text-xs">
+                      {t(`activityType.${activity.type}`)}
+                    </span>
+                    {activity.date && (
+                      <span className="font-mono text-muted text-sm tabular-nums">
+                        {formatMonth(locale, activity.date)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold tracking-tight">{activity.title}</h3>
+                      {activity.organization && (
+                        <p className="text-muted text-sm">{activity.organization}</p>
+                      )}
+                    </div>
+                    {media?.url && (
+                      <CertificateViewer
+                        name={activity.title}
+                        url={media.url}
+                        mimeType={media.mimeType}
+                        thumbUrl={thumbUrl}
+                      />
+                    )}
+                  </div>
+                  {activity.content && (
+                    <div className="mt-4">
+                      <RichText data={activity.content} />
+                    </div>
+                  )}
+                </article>
+              )
+            })}
+          </div>
         </section>
       )}
 

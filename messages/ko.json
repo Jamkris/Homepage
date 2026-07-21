@@ -51,7 +51,12 @@
     "toolsSub": "자주 손이 가는 도구들",
     "viewCertificate": "증명서 보기",
     "close": "닫기",
-    "download": "다운로드"
+    "download": "다운로드",
+    "awards": "수상 및 활동",
+    "activityType": {
+      "award": "수상",
+      "activity": "활동"
+    }
   },
   "portfolio": {
     "title": "포트폴리오",
