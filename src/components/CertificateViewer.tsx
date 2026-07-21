@@ -30,9 +30,18 @@ export function CertificateViewer({ name, url, mimeType, thumbUrl }: Certificate
     }
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
+    // Restore the native cursor over the modal — the custom cursor overlay sits
+    // below it (z-95 < z-100) and `cursor: none` would otherwise hide the pointer.
+    const hadCustomCursor = document.body.hasAttribute('data-custom-cursor')
+    if (hadCustomCursor) {
+      document.body.removeAttribute('data-custom-cursor')
+    }
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
+      if (hadCustomCursor) {
+        document.body.setAttribute('data-custom-cursor', '')
+      }
     }
   }, [open])
 
@@ -74,7 +83,7 @@ export function CertificateViewer({ name, url, mimeType, thumbUrl }: Certificate
               exit={{ scale: 0.94, opacity: 0 }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative flex max-h-[90vh] w-full max-w-3xl flex-col"
+              className="relative flex max-h-[92vh] w-full max-w-5xl flex-col"
             >
               <div className="mb-3 flex items-center justify-between gap-4">
                 <p className="truncate text-sm font-medium text-white">{name}</p>
@@ -91,13 +100,13 @@ export function CertificateViewer({ name, url, mimeType, thumbUrl }: Certificate
                 <img
                   src={url}
                   alt={name}
-                  className="max-h-[80vh] w-full rounded-lg bg-white object-contain"
+                  className="max-h-[85vh] w-full rounded-lg bg-white object-contain"
                 />
               ) : isPdf ? (
                 <iframe
                   src={url}
                   title={name}
-                  className="h-[80vh] w-full rounded-lg border-0 bg-white"
+                  className="h-[85vh] w-full rounded-lg border-0 bg-white"
                 />
               ) : (
                 <a
