@@ -20,6 +20,34 @@ export const formatMonth = (_locale: string, value: string | null | undefined): 
   return `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
+// Flatten a Lexical rich-text value into a plain-text excerpt
+export const richTextToPlainText = (data: unknown, max = 120): string => {
+  const root = (data as { root?: { children?: unknown[] } } | null)?.root
+  if (!root?.children) {
+    return ''
+  }
+
+  const parts: string[] = []
+  const walk = (nodes: unknown[]): void => {
+    for (const n of nodes) {
+      if (!n || typeof n !== 'object') {
+        continue
+      }
+      const node = n as { text?: string; children?: unknown[] }
+      if (typeof node.text === 'string') {
+        parts.push(node.text)
+      }
+      if (Array.isArray(node.children)) {
+        walk(node.children)
+      }
+    }
+  }
+  walk(root.children)
+
+  const text = parts.join(' ').replace(/\s+/g, ' ').trim()
+  return text.length > max ? `${text.slice(0, max).trimEnd()}…` : text
+}
+
 // Display a URL with the middle elided — e.g. figma.com/des...8eY0-1
 // (strips the protocol; the full URL should stay as the href)
 export const truncateUrl = (url: string, head = 16, tail = 7): string => {

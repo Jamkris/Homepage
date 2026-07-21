@@ -56,7 +56,9 @@
     "activityType": {
       "award": "Award",
       "activity": "Activity"
-    }
+    },
+    "awardsTitle": "Awards & Activities",
+    "scrollHint": "scroll"
   },
   "portfolio": {
     "title": "Portfolio",

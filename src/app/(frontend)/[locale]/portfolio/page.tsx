@@ -4,7 +4,7 @@ import React from 'react'
 
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatMonth } from '@/lib/format'
+import { formatMonth, richTextToPlainText } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
 
@@ -24,7 +24,6 @@ interface TimelineItem {
   dateLabel: string
   ongoing: boolean
   tags: string[]
-  imageUrl?: string | null
 }
 
 export async function generateMetadata({ params }: PortfolioPageProps): Promise<Metadata> {
@@ -66,40 +65,31 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
     }),
   ])
 
-  const projectItems: TimelineItem[] = projectsResult.docs.map((project) => {
-    const media = typeof project.coverImage === 'object' ? project.coverImage : null
-    return {
-      key: `project-${project.id}`,
-      href: `/portfolio/${project.slug}`,
-      title: project.title,
-      summary: project.summary,
-      typeLabel: t(`categories.${project.category}`),
-      dateMs: msOf(project.startedAt),
-      dateLabel: formatMonth(locale, project.startedAt),
-      ongoing: Boolean(project.startedAt && !project.endedAt),
-      tags: project.techStack ?? [],
-      imageUrl: media?.sizes?.card?.url ?? media?.url ?? null,
-    }
-  })
+  const projectItems: TimelineItem[] = projectsResult.docs.map((project) => ({
+    key: `project-${project.id}`,
+    href: `/portfolio/${project.slug}`,
+    title: project.title,
+    summary: project.summary,
+    typeLabel: t(`categories.${project.category}`),
+    dateMs: msOf(project.startedAt),
+    dateLabel: formatMonth(locale, project.startedAt),
+    ongoing: Boolean(project.startedAt && !project.endedAt),
+    tags: project.techStack ?? [],
+  }))
 
   const activityItems: TimelineItem[] = activitiesResult.docs
     .filter((activity) => activity.slug)
-    .map((activity) => {
-      const media = typeof activity.attachment === 'object' ? activity.attachment : null
-      const isImage = (media?.mimeType ?? '').startsWith('image/')
-      return {
-        key: `activity-${activity.id}`,
-        href: `/activities/${activity.slug}`,
-        title: activity.title,
-        summary: activity.organization,
-        typeLabel: tAbout(`activityType.${activity.type}`),
-        dateMs: msOf(activity.startDate),
-        dateLabel: formatMonth(locale, activity.startDate),
-        ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
-        tags: activity.tags ?? [],
-        imageUrl: isImage ? (media?.sizes?.thumbnail?.url ?? media?.url ?? null) : null,
-      }
-    })
+    .map((activity) => ({
+      key: `activity-${activity.id}`,
+      href: `/activities/${activity.slug}`,
+      title: activity.title,
+      summary: richTextToPlainText(activity.content) || activity.organization,
+      typeLabel: tAbout(`activityType.${activity.type}`),
+      dateMs: msOf(activity.startDate),
+      dateLabel: formatMonth(locale, activity.startDate),
+      ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
+      tags: activity.tags ?? [],
+    }))
 
   const items = [...projectItems, ...activityItems].sort((a, b) => b.dateMs - a.dateMs)
 
@@ -114,10 +104,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
       ) : (
         <div className="mt-16 sm:mt-20">
           {items.map((item, i) => (
-            <article
-              key={item.key}
-              className="border-border grid grid-cols-1 gap-5 border-t py-8 sm:grid-cols-[1fr_auto] sm:gap-10 sm:py-10"
-            >
+            <article key={item.key} className="border-border border-t py-8 sm:py-10">
               <div className="min-w-0">
                 <div className="font-mono text-muted flex flex-wrap items-center gap-x-4 gap-y-1 text-xs tracking-wider uppercase">
                   <span className="text-accent tabular-nums">
@@ -160,18 +147,6 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
                   </ul>
                 )}
               </div>
-              {item.imageUrl && (
-                <Link href={item.href} className="group block sm:order-first sm:w-64">
-                  <div className="border-border bg-surface overflow-hidden rounded-lg border">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                    />
-                  </div>
-                </Link>
-              )}
             </article>
           ))}
           <div className="border-border border-t" />

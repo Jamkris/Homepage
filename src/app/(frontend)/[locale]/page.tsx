@@ -12,7 +12,7 @@ import { Reveal } from '@/components/fx/Reveal'
 import { SmoothScroll } from '@/components/fx/SmoothScroll'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatMonth } from '@/lib/format'
+import { formatMonth, richTextToPlainText } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
 import type { Project } from '@/payload-types'
@@ -50,20 +50,16 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const portfolioLimit = home.portfolioLimit ?? 4
 
-  const projectToItem = (project: Project): PortfolioCardItem & { dateMs: number } => {
-    const media = typeof project.coverImage === 'object' ? project.coverImage : null
-    return {
-      key: `project-${project.id}`,
-      href: `/portfolio/${project.slug}`,
-      title: project.title,
-      summary: project.summary,
-      typeLabel: tPortfolio(`categories.${project.category}`),
-      dateLabel: formatMonth(locale, project.startedAt),
-      dateMs: project.startedAt ? new Date(project.startedAt).getTime() : Number.NEGATIVE_INFINITY,
-      ongoing: Boolean(project.startedAt && !project.endedAt),
-      imageUrl: media?.sizes?.card?.url ?? media?.url ?? null,
-    }
-  }
+  const projectToItem = (project: Project): PortfolioCardItem & { dateMs: number } => ({
+    key: `project-${project.id}`,
+    href: `/portfolio/${project.slug}`,
+    title: project.title,
+    summary: project.summary,
+    typeLabel: tPortfolio(`categories.${project.category}`),
+    dateLabel: formatMonth(locale, project.startedAt),
+    dateMs: project.startedAt ? new Date(project.startedAt).getTime() : Number.NEGATIVE_INFINITY,
+    ongoing: Boolean(project.startedAt && !project.endedAt),
+  })
 
   // Optional pinned projects go first; the rest fills with the newest merged items
   const pinnedItems =
@@ -103,23 +99,18 @@ export default async function HomePage({ params }: HomePageProps) {
     ...latestProjects.docs.map(projectToItem),
     ...latestActivities.docs
       .filter((activity) => activity.slug)
-      .map((activity): PortfolioCardItem & { dateMs: number } => {
-        const media = typeof activity.attachment === 'object' ? activity.attachment : null
-        const isImage = (media?.mimeType ?? '').startsWith('image/')
-        return {
-          key: `activity-${activity.id}`,
-          href: `/activities/${activity.slug}`,
-          title: activity.title,
-          summary: activity.organization,
-          typeLabel: tAbout(`activityType.${activity.type}`),
-          dateLabel: formatMonth(locale, activity.startDate),
-          dateMs: activity.startDate
-            ? new Date(activity.startDate).getTime()
-            : Number.NEGATIVE_INFINITY,
-          ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
-          imageUrl: isImage ? (media?.sizes?.thumbnail?.url ?? media?.url ?? null) : null,
-        }
-      }),
+      .map((activity): PortfolioCardItem & { dateMs: number } => ({
+        key: `activity-${activity.id}`,
+        href: `/activities/${activity.slug}`,
+        title: activity.title,
+        summary: richTextToPlainText(activity.content) || activity.organization,
+        typeLabel: tAbout(`activityType.${activity.type}`),
+        dateLabel: formatMonth(locale, activity.startDate),
+        dateMs: activity.startDate
+          ? new Date(activity.startDate).getTime()
+          : Number.NEGATIVE_INFINITY,
+        ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
+      })),
   ]
     .filter((item) => !pinnedKeys.has(item.key))
     .sort((a, b) => b.dateMs - a.dateMs)
@@ -231,8 +222,8 @@ export default async function HomePage({ params }: HomePageProps) {
             <Reveal>
               <SectionHeading label={t('currentlyLabel')} />
               <p className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-                {currentJob.role}{' '}
-                <span className="text-muted font-normal">@ {currentJob.company}</span>
+                {currentJob.company}{' '}
+                <span className="text-muted font-normal">· {currentJob.role}</span>
               </p>
               {currentJob.description && (
                 <p className="text-muted mt-3 max-w-2xl">{currentJob.description}</p>

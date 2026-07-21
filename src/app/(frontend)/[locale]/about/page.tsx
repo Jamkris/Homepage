@@ -7,7 +7,7 @@ import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatMonth } from '@/lib/format'
+import { formatMonth, richTextToPlainText } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
 
@@ -202,42 +202,35 @@ export default async function AboutPage({ params }: AboutPageProps) {
         </section>
       )}
 
-      {/* Awards & Activities */}
+      {/* Awards & Activities — horizontal scrolling cards */}
       {activities.length > 0 && (
         <section className="border-border mt-16 border-t pt-14">
           <h2 className="eyebrow">{t('awards')}</h2>
-          <div className="mt-8 space-y-6">
+          <h3 className="mt-4 text-2xl font-bold tracking-tight">{t('awardsTitle')}</h3>
+
+          <div className="mt-8 flex snap-x gap-4 overflow-x-auto pb-4">
             {activities.map((activity) => {
-              const inner = (
-                <>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="font-mono text-accent border-accent/30 rounded-full border px-2.5 py-0.5 text-xs">
-                      {t(`activityType.${activity.type}`)}
-                    </span>
-                    {activity.startDate && (
-                      <span className="font-mono text-muted text-sm tabular-nums">
-                        {formatMonth(locale, activity.startDate)}
-                        {activity.ongoing
-                          ? ` — ${tCommon('present')}`
-                          : activity.endDate
-                            ? ` — ${formatMonth(locale, activity.endDate)}`
-                            : ''}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="group-hover:text-accent mt-2 text-lg font-semibold tracking-tight transition-colors">
+              const excerpt = richTextToPlainText(activity.content) || activity.organization || ''
+              const card = (
+                <div className="border-border bg-surface/40 group-hover:border-accent/50 flex h-full flex-col rounded-xl border p-5 transition-colors">
+                  <p className="font-mono text-muted text-xs tabular-nums">
+                    {formatMonth(locale, activity.startDate)}
+                    {activity.ongoing
+                      ? ` ~ ${tCommon('present')}`
+                      : activity.endDate
+                        ? ` ~ ${formatMonth(locale, activity.endDate)}`
+                        : ''}
+                  </p>
+                  <h4 className="group-hover:text-accent mt-3 text-lg font-bold tracking-tight transition-colors">
                     {activity.title}
-                    {activity.slug && (
-                      <span className="ml-1.5 inline-block text-sm" aria-hidden>
-                        ↗
-                      </span>
-                    )}
-                  </h3>
-                  {activity.organization && (
-                    <p className="text-muted text-sm">{activity.organization}</p>
+                  </h4>
+                  {excerpt && (
+                    <p className="text-muted mt-2 line-clamp-3 flex-1 text-sm leading-relaxed">
+                      {excerpt}
+                    </p>
                   )}
                   {activity.tags && activity.tags.length > 0 && (
-                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                    <ul className="mt-3 flex flex-wrap gap-1.5">
                       {activity.tags.map((tag) => (
                         <li
                           key={tag}
@@ -248,25 +241,32 @@ export default async function AboutPage({ params }: AboutPageProps) {
                       ))}
                     </ul>
                   )}
-                </>
+                  {activity.slug && (
+                    <span className="text-accent mt-4 inline-block text-sm">
+                      → {tCommon('readMore')}
+                    </span>
+                  )}
+                </div>
               )
 
-              return (
-                <article
+              return activity.slug ? (
+                <Link
                   key={activity.id}
-                  className="border-border/60 border-t pt-5 first:border-0 first:pt-0"
+                  href={`/activities/${activity.slug}`}
+                  className="group w-[280px] shrink-0 snap-start sm:w-[320px]"
                 >
-                  {activity.slug ? (
-                    <Link href={`/activities/${activity.slug}`} className="group block">
-                      {inner}
-                    </Link>
-                  ) : (
-                    inner
-                  )}
-                </article>
+                  {card}
+                </Link>
+              ) : (
+                <div key={activity.id} className="w-[280px] shrink-0 snap-start sm:w-[320px]">
+                  {card}
+                </div>
               )
             })}
           </div>
+          <p className="font-mono text-muted mt-2 text-center text-xs tracking-wider">
+            ← {t('scrollHint')} →
+          </p>
         </section>
       )}
 

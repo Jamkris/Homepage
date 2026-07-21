@@ -56,7 +56,9 @@
     "activityType": {
       "award": "수상",
       "activity": "활동"
-    }
+    },
+    "awardsTitle": "수상 · 활동",
+    "scrollHint": "좌우로 넘기기"
   },
   "portfolio": {
     "title": "포트폴리오",
