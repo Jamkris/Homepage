@@ -5,7 +5,7 @@ services:
     container_name: homepage
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - '3060:3000'
     environment:
       - DATABASE_URL=file:/data/db/homepage.db
       - MEDIA_DIR=/data/media
