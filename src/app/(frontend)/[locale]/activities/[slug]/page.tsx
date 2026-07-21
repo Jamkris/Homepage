@@ -7,7 +7,7 @@ import { CertificateViewer } from '@/components/CertificateViewer'
 import { RichText } from '@/components/RichText'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatFullDate } from '@/lib/format'
+import { formatFullDate, truncateUrl } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
 import type { Activity } from '@/payload-types'
@@ -117,9 +117,10 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
                     href={ref.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent break-all underline underline-offset-4"
+                    title={ref.url}
+                    className="text-accent underline underline-offset-4"
                   >
-                    {ref.url}
+                    {truncateUrl(ref.url)}
                   </a>
                 </dd>
               </div>

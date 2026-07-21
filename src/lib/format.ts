@@ -20,6 +20,16 @@ export const formatMonth = (_locale: string, value: string | null | undefined): 
   return `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
+// Display a URL with the middle elided — e.g. figma.com/des...8eY0-1
+// (strips the protocol; the full URL should stay as the href)
+export const truncateUrl = (url: string, head = 16, tail = 7): string => {
+  const display = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+  if (display.length <= head + tail + 1) {
+    return display
+  }
+  return `${display.slice(0, head)}…${display.slice(-tail)}`
+}
+
 // Numeric year.month.day — e.g. 2023.04.05
 export const formatFullDate = (_locale: string, value: string | null | undefined): string => {
   if (!value) {
