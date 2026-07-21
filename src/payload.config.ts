@@ -1,6 +1,6 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
 import { en } from '@payloadcms/translations/languages/en'
 import { ko } from '@payloadcms/translations/languages/ko'
 import path from 'path'
@@ -44,7 +44,32 @@ export default buildConfig({
     defaultLocale: 'ko',
     fallback: true,
   },
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      // Replaces the default upload feature; adds a display-size picker to
+      // images inserted into rich text (click the image to open the drawer).
+      UploadFeature({
+        collections: {
+          media: {
+            fields: [
+              {
+                name: 'size',
+                type: 'select',
+                label: { ko: '표시 크기', en: 'Display size' },
+                defaultValue: 'full',
+                options: [
+                  { label: { ko: '작게', en: 'Small' }, value: 'small' },
+                  { label: { ko: '보통', en: 'Medium' }, value: 'medium' },
+                  { label: { ko: '크게 (원본 폭)', en: 'Full' }, value: 'full' },
+                ],
+              },
+            ],
+          },
+        },
+      }),
+    ],
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

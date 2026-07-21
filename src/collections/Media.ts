@@ -32,15 +32,14 @@ export const Media: CollectionConfig = {
     staticDir: process.env.MEDIA_DIR || path.resolve(dirname, '../../media'),
     imageSizes: [
       {
+        // width-only (no height) preserves aspect ratio — avoids cropped
+        // previews in the admin editor and media list
         name: 'thumbnail',
-        width: 480,
-        height: 320,
-        position: 'centre',
+        width: 640,
       },
       {
         name: 'card',
         width: 1024,
-        height: undefined,
       },
     ],
     adminThumbnail: 'thumbnail',

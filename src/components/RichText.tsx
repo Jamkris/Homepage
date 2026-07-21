@@ -14,6 +14,12 @@ interface RichTextProps {
 
 // Render inline uploads at their natural aspect ratio (no cropping) instead of
 // the default converter, which can clip tall images.
+const SIZE_CLASS: Record<string, string> = {
+  small: 'max-w-xs',
+  medium: 'max-w-md',
+  full: 'max-w-full',
+}
+
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
   upload: ({ node }) => {
@@ -41,6 +47,9 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
       )
     }
 
+    const size = (node.fields as { size?: string } | undefined)?.size ?? 'full'
+    const sizeClass = SIZE_CLASS[size] ?? SIZE_CLASS.full
+
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
@@ -48,7 +57,7 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
         alt={media.alt ?? ''}
         width={media.width ?? undefined}
         height={media.height ?? undefined}
-        className="mx-auto h-auto max-w-full rounded-lg"
+        className={`mx-auto h-auto w-full rounded-lg ${sizeClass}`}
       />
     )
   },
