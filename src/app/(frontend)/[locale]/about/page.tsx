@@ -5,6 +5,7 @@ import React from 'react'
 import { CertificateViewer } from '@/components/CertificateViewer'
 import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
+import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { formatMonth } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
@@ -40,8 +41,19 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const tCommon = await getTranslations('common')
   const payload = await getPayloadClient()
 
-  const about = await payload.findGlobal({ slug: 'about', locale, depth: 1 })
+  const [about, activitiesResult] = await Promise.all([
+    payload.findGlobal({ slug: 'about', locale, depth: 1 }),
+    payload.find({
+      collection: 'activities',
+      locale,
+      depth: 1,
+      limit: 100,
+      sort: '-startDate',
+      where: { _status: { equals: 'published' } },
+    }),
+  ])
 
+  const activities = activitiesResult.docs
   const experiences = about.experiences ?? []
   const certifications = about.certifications ?? []
   const skillGroups = about.skillGroups ?? []
@@ -187,6 +199,74 @@ export default async function AboutPage({ params }: AboutPageProps) {
               )
             })}
           </ul>
+        </section>
+      )}
+
+      {/* Awards & Activities */}
+      {activities.length > 0 && (
+        <section className="border-border mt-16 border-t pt-14">
+          <h2 className="eyebrow">{t('awards')}</h2>
+          <div className="mt-8 space-y-6">
+            {activities.map((activity) => {
+              const inner = (
+                <>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="font-mono text-accent border-accent/30 rounded-full border px-2.5 py-0.5 text-xs">
+                      {t(`activityType.${activity.type}`)}
+                    </span>
+                    {activity.startDate && (
+                      <span className="font-mono text-muted text-sm tabular-nums">
+                        {formatMonth(locale, activity.startDate)}
+                        {activity.ongoing
+                          ? ` — ${tCommon('present')}`
+                          : activity.endDate
+                            ? ` — ${formatMonth(locale, activity.endDate)}`
+                            : ''}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="group-hover:text-accent mt-2 text-lg font-semibold tracking-tight transition-colors">
+                    {activity.title}
+                    {activity.slug && (
+                      <span className="ml-1.5 inline-block text-sm" aria-hidden>
+                        ↗
+                      </span>
+                    )}
+                  </h3>
+                  {activity.organization && (
+                    <p className="text-muted text-sm">{activity.organization}</p>
+                  )}
+                  {activity.tags && activity.tags.length > 0 && (
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {activity.tags.map((tag) => (
+                        <li
+                          key={tag}
+                          className="font-mono text-accent bg-accent/10 rounded px-2 py-0.5 text-xs"
+                        >
+                          #{tag}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )
+
+              return (
+                <article
+                  key={activity.id}
+                  className="border-border/60 border-t pt-5 first:border-0 first:pt-0"
+                >
+                  {activity.slug ? (
+                    <Link href={`/activities/${activity.slug}`} className="group block">
+                      {inner}
+                    </Link>
+                  ) : (
+                    inner
+                  )}
+                </article>
+              )
+            })}
+          </div>
         </section>
       )}
 
