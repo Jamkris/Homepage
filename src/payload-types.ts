@@ -311,7 +311,19 @@ export interface Activity {
   id: number;
   title: string;
   type: 'award' | 'activity';
-  date?: string | null;
+  startDate?: string | null;
+  /**
+   * 체크하면 종료일 대신 "진행 중"으로 표시돼요
+   */
+  ongoing?: boolean | null;
+  /**
+   * 진행 중이면 비워두세요
+   */
+  endDate?: string | null;
+  /**
+   * 내가 맡았던 부분 등 (예: APP, WEB, INFRA)
+   */
+  tags?: string[] | null;
   organization?: string | null;
   /**
    * 이미지 또는 PDF 업로드 — 사이트에서 뷰어로 바로 열립니다 (수상 시)
@@ -569,7 +581,10 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface ActivitiesSelect<T extends boolean = true> {
   title?: T;
   type?: T;
-  date?: T;
+  startDate?: T;
+  ongoing?: T;
+  endDate?: T;
+  tags?: T;
   organization?: T;
   attachment?: T;
   content?: T;

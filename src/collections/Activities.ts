@@ -10,7 +10,7 @@ export const Activities: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'date', '_status'],
+    defaultColumns: ['title', 'type', 'startDate', '_status'],
   },
   access: {
     read: publishedOrLoggedIn,
@@ -18,7 +18,7 @@ export const Activities: CollectionConfig = {
   versions: {
     drafts: true,
   },
-  defaultSort: '-date',
+  defaultSort: '-startDate',
   fields: [
     {
       name: 'title',
@@ -40,10 +40,39 @@ export const Activities: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     {
-      name: 'date',
+      name: 'startDate',
       type: 'date',
-      label: { ko: '날짜', en: 'Date' },
+      label: { ko: '시작일', en: 'Start date' },
       admin: { position: 'sidebar' },
+    },
+    {
+      name: 'ongoing',
+      type: 'checkbox',
+      label: { ko: '진행 중', en: 'Ongoing' },
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: '체크하면 종료일 대신 "진행 중"으로 표시돼요',
+      },
+    },
+    {
+      name: 'endDate',
+      type: 'date',
+      label: { ko: '종료일', en: 'End date' },
+      admin: {
+        position: 'sidebar',
+        description: '진행 중이면 비워두세요',
+        condition: (_, siblingData) => !siblingData?.ongoing,
+      },
+    },
+    {
+      name: 'tags',
+      type: 'text',
+      label: { ko: '해시태그', en: 'Tags' },
+      hasMany: true,
+      admin: {
+        description: '내가 맡았던 부분 등 (예: APP, WEB, INFRA)',
+      },
     },
     {
       name: 'organization',

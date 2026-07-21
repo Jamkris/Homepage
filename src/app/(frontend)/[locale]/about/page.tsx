@@ -47,7 +47,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
       locale,
       depth: 1,
       limit: 100,
-      sort: '-date',
+      sort: '-startDate',
       where: { _status: { equals: 'published' } },
     }),
   ])
@@ -222,9 +222,14 @@ export default async function AboutPage({ params }: AboutPageProps) {
                     <span className="font-mono text-accent border-accent/30 rounded-full border px-2.5 py-0.5 text-xs">
                       {t(`activityType.${activity.type}`)}
                     </span>
-                    {activity.date && (
+                    {activity.startDate && (
                       <span className="font-mono text-muted text-sm tabular-nums">
-                        {formatMonth(locale, activity.date)}
+                        {formatMonth(locale, activity.startDate)}
+                        {activity.ongoing
+                          ? ` — ${tCommon('present')}`
+                          : activity.endDate
+                            ? ` — ${formatMonth(locale, activity.endDate)}`
+                            : ''}
                       </span>
                     )}
                   </div>
@@ -233,6 +238,18 @@ export default async function AboutPage({ params }: AboutPageProps) {
                       <h3 className="text-lg font-semibold tracking-tight">{activity.title}</h3>
                       {activity.organization && (
                         <p className="text-muted text-sm">{activity.organization}</p>
+                      )}
+                      {activity.tags && activity.tags.length > 0 && (
+                        <ul className="mt-2 flex flex-wrap gap-1.5">
+                          {activity.tags.map((tag) => (
+                            <li
+                              key={tag}
+                              className="font-mono text-accent bg-accent/10 rounded px-2 py-0.5 text-xs"
+                            >
+                              #{tag}
+                            </li>
+                          ))}
+                        </ul>
                       )}
                     </div>
                     {media?.url && (
