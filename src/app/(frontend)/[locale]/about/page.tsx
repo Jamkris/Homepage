@@ -167,18 +167,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 >
                   <div className="min-w-0">
                     <p>
-                      {cert.url && !media ? (
-                        <a
-                          href={cert.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-accent underline underline-offset-4 transition-colors"
-                        >
-                          {cert.name}
-                        </a>
-                      ) : (
-                        cert.name
-                      )}
+                      {cert.name}
                       {cert.issuer && <span className="text-muted"> · {cert.issuer}</span>}
                     </p>
                     {cert.issuedAt && (
@@ -187,13 +176,24 @@ export default async function AboutPage({ params }: AboutPageProps) {
                       </p>
                     )}
                   </div>
-                  {media?.url && (
+                  {media?.url ? (
                     <CertificateViewer
                       name={cert.name}
                       url={media.url}
                       mimeType={media.mimeType}
                       thumbUrl={thumbUrl}
                     />
+                  ) : (
+                    cert.url && (
+                      <a
+                        href={cert.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent inline-flex shrink-0 items-center gap-1.5 rounded-md border px-3 py-2 text-xs transition-colors"
+                      >
+                        {t('viewCertificate')} ↗
+                      </a>
+                    )
                   )}
                 </li>
               )

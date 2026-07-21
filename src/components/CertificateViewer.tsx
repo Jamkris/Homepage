@@ -62,7 +62,7 @@ export function CertificateViewer({ name, url, mimeType, thumbUrl }: Certificate
           />
         ) : (
           <span className="font-mono border-accent/40 bg-accent/10 text-accent group-hover:bg-accent/20 group-hover:border-accent inline-flex items-center gap-1.5 rounded-md border px-3 py-2 text-xs transition-colors">
-            {isPdf ? 'PDF' : '📄'} {t('viewCertificate')} ↗
+            {t('viewCertificate')} ↗
           </span>
         )}
       </button>
