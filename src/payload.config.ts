@@ -1,6 +1,12 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
+import {
+  BlocksFeature,
+  EXPERIMENTAL_TableFeature as TableFeature,
+  HorizontalRuleFeature,
+  lexicalEditor,
+  UploadFeature,
+} from '@payloadcms/richtext-lexical'
 import { en } from '@payloadcms/translations/languages/en'
 import { ko } from '@payloadcms/translations/languages/ko'
 import path from 'path'
@@ -8,6 +14,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { editorBlocks } from './blocks/editorBlocks'
 import { migrations } from './migrations'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -47,6 +54,10 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
+      TableFeature(),
+      HorizontalRuleFeature(),
+      // callout / video / file blocks — appear in the "/" menu
+      BlocksFeature({ blocks: editorBlocks }),
       // Replaces the default upload feature; adds a display-size picker to
       // images inserted into rich text (click the image to open the drawer).
       UploadFeature({

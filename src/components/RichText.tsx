@@ -12,12 +12,46 @@ interface RichTextProps {
   className?: string
 }
 
-// Render inline uploads at their natural aspect ratio (no cropping) instead of
-// the default converter, which can clip tall images.
 const SIZE_CLASS: Record<string, string> = {
   small: 'max-w-xs',
   medium: 'max-w-md',
   full: 'max-w-full',
+}
+
+const CALLOUT_VARIANT: Record<string, { box: string; icon: string }> = {
+  info: { box: 'border-accent/40 bg-accent/5', icon: 'ℹ' },
+  warning: { box: 'border-amber-500/40 bg-amber-500/5', icon: '⚠' },
+  success: { box: 'border-emerald-500/40 bg-emerald-500/5', icon: '✓' },
+  note: { box: 'border-border bg-surface', icon: '✎' },
+}
+
+// Turn a YouTube/Vimeo watch link into an embeddable URL
+const toEmbedUrl = (url: string): string | null => {
+  try {
+    const u = new URL(url)
+    const host = u.hostname.replace(/^www\./, '')
+    if (host === 'youtu.be') {
+      return `https://www.youtube.com/embed/${u.pathname.slice(1)}`
+    }
+    if (host.endsWith('youtube.com')) {
+      const v = u.searchParams.get('v')
+      if (v) {
+        return `https://www.youtube.com/embed/${v}`
+      }
+      if (u.pathname.startsWith('/embed/')) {
+        return url
+      }
+    }
+    if (host.endsWith('vimeo.com')) {
+      const id = u.pathname.split('/').filter(Boolean)[0]
+      if (id) {
+        return `https://player.vimeo.com/video/${id}`
+      }
+    }
+    return null
+  } catch {
+    return null
+  }
 }
 
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
@@ -60,6 +94,68 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
         className={`mx-auto h-auto w-full rounded-lg ${sizeClass}`}
       />
     )
+  },
+  blocks: {
+    callout: ({ node }: { node: { fields: { variant?: string; content?: SerializedEditorState } } }) => {
+      const fields = node.fields
+      const variant = CALLOUT_VARIANT[fields.variant ?? 'info'] ?? CALLOUT_VARIANT.info
+      return (
+        <div className={`not-prose my-6 flex gap-3 rounded-lg border p-4 ${variant.box}`}>
+          <span aria-hidden className="text-lg leading-none">
+            {variant.icon}
+          </span>
+          <div className="prose dark:prose-invert prose-sm min-w-0 max-w-none">
+            <RichText data={fields.content} />
+          </div>
+        </div>
+      )
+    },
+    video: ({ node }: { node: { fields: { url?: string; caption?: string } } }) => {
+      const fields = node.fields
+      const embed = fields.url ? toEmbedUrl(fields.url) : null
+      if (!embed) {
+        return null
+      }
+      return (
+        <figure className="not-prose my-6">
+          <div className="aspect-video w-full overflow-hidden rounded-lg">
+            <iframe
+              src={embed}
+              title={fields.caption ?? 'video'}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="size-full border-0"
+            />
+          </div>
+          {fields.caption && (
+            <figcaption className="text-muted mt-2 text-center text-sm">{fields.caption}</figcaption>
+          )}
+        </figure>
+      )
+    },
+    fileDownload: ({
+      node,
+    }: {
+      node: { fields: { file?: Media | number | null; label?: string } }
+    }) => {
+      const fields = node.fields
+      const file = fields.file
+      if (!file || typeof file !== 'object' || !file.url) {
+        return null
+      }
+      return (
+        <a
+          href={file.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+          className="not-prose border-border hover:border-accent my-4 inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm transition-colors"
+        >
+          <span aria-hidden>↓</span>
+          <span>{fields.label || file.filename || 'download'}</span>
+        </a>
+      )
+    },
   },
 })
 
