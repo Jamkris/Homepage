@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     posts: Post;
     projects: Project;
+    contacts: Contact;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    contacts: ContactsSelect<false> | ContactsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -95,11 +97,13 @@ export interface Config {
     'site-settings': SiteSetting;
     about: About;
     home: Home;
+    notifications: Notification;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
   };
   locale: 'ko' | 'en';
   widgets: {
@@ -299,6 +303,19 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts".
+ */
+export interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  message: string;
+  archived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -336,6 +353,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'contacts';
+        value: number | Contact;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -498,6 +519,18 @@ export interface ProjectsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts_select".
+ */
+export interface ContactsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  message?: T;
+  archived?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -666,6 +699,27 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
+ * 연락 폼 제출 시 ntfy로 푸시 알림을 보냅니다.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: number;
+  enabled?: boolean | null;
+  ntfyUrl?: string | null;
+  /**
+   * 예: homepage-contact
+   */
+  ntfyTopic?: string | null;
+  /**
+   * 보호된 토픽일 때만 입력
+   */
+  ntfyToken?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -737,6 +791,19 @@ export interface HomeSelect<T extends boolean = true> {
   heroSubtitle?: T;
   featuredProjects?: T;
   recentPostsLimit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  enabled?: T;
+  ntfyUrl?: T;
+  ntfyTopic?: T;
+  ntfyToken?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

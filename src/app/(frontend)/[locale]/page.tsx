@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import React from 'react'
 
 import { MediaImage } from '@/components/MediaImage'
+import { ContactForm } from '@/components/ContactForm'
 import { PostCard } from '@/components/PostCard'
 import { ProjectCard } from '@/components/ProjectCard'
 import { SectionHeading } from '@/components/SectionHeading'
@@ -244,10 +245,11 @@ export default async function HomePage({ params }: HomePageProps) {
               {t('contactTitle')}
             </h2>
             <p className="text-muted mx-auto mt-4 max-w-md">{t('contactSub')}</p>
+            <ContactForm />
             {mailto && (
               <a
                 href={mailto}
-                className="font-mono border-accent/50 hover:border-accent bg-accent/5 hover:bg-accent/10 mt-9 inline-block rounded-lg border px-8 py-4 text-sm transition-colors"
+                className="font-mono text-muted hover:text-accent mt-6 inline-block text-xs transition-colors"
               >
                 {t('getInTouch')} ↗
               </a>

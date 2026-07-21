@@ -83,5 +83,20 @@
   "notFound": {
     "title": "Page not found",
     "back": "Back to home"
+  },
+  "contactForm": {
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "sentTitle": "Message sent",
+    "sentBody": "Thanks — I'll get back to you as soon as I can.",
+    "errors": {
+      "required": "Please fill in every field.",
+      "email": "Please enter a valid email address.",
+      "tooLong": "That input is too long.",
+      "server": "Something went wrong. Please try again shortly."
+    }
   }
 }

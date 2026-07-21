@@ -13,9 +13,11 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { Projects } from './collections/Projects'
+import { Contacts } from './collections/Contacts'
 import { SiteSettings } from './globals/SiteSettings'
 import { About } from './globals/About'
 import { Home } from './globals/Home'
+import { Notifications } from './globals/Notifications'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,8 +29,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Posts, Projects],
-  globals: [SiteSettings, About, Home],
+  collections: [Users, Media, Posts, Projects, Contacts],
+  globals: [SiteSettings, About, Home, Notifications],
   i18n: {
     supportedLanguages: { ko, en },
     fallbackLanguage: 'ko',
