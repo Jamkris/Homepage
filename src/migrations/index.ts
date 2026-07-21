@@ -6,6 +6,7 @@ import * as migration_20260721_044508_activities from './20260721_044508_activit
 import * as migration_20260721_050000_activities_daterange_tags from './20260721_050000_activities_daterange_tags';
 import * as migration_20260721_060000_activities_slug from './20260721_060000_activities_slug';
 import * as migration_20260721_070000_activities_references from './20260721_070000_activities_references';
+import * as migration_20260721_080000_home_portfolio_limit from './20260721_080000_home_portfolio_limit';
 
 export const migrations = [
   {
@@ -47,5 +48,10 @@ export const migrations = [
     up: migration_20260721_070000_activities_references.up,
     down: migration_20260721_070000_activities_references.down,
     name: '20260721_070000_activities_references',
+  },
+  {
+    up: migration_20260721_080000_home_portfolio_limit.up,
+    down: migration_20260721_080000_home_portfolio_limit.down,
+    name: '20260721_080000_home_portfolio_limit',
   },
 ];

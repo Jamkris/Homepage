@@ -25,11 +25,22 @@ export const Home: GlobalConfig = {
     {
       name: 'featuredProjects',
       type: 'relationship',
-      label: { ko: '대표 프로젝트', en: 'Featured projects' },
+      label: { ko: '대표 프로젝트 (고정)', en: 'Pinned projects' },
       relationTo: 'projects',
       hasMany: true,
       admin: {
-        description: '홈에 노출할 대표 프로젝트 (순서대로 표시)',
+        description: '지정하면 이 프로젝트들을 맨 앞에 고정 노출 (선택). 비우면 최신순으로 채워집니다.',
+      },
+    },
+    {
+      name: 'portfolioLimit',
+      type: 'number',
+      label: { ko: '홈 포트폴리오 개수', en: 'Portfolio limit' },
+      defaultValue: 4,
+      min: 0,
+      max: 12,
+      admin: {
+        description: '홈에 표시할 포트폴리오 개수 — 프로젝트+수상·활동을 최신순으로 (0이면 숨김)',
       },
     },
     {

@@ -789,9 +789,13 @@ export interface Home {
   heroTitle?: string | null;
   heroSubtitle?: string | null;
   /**
-   * 홈에 노출할 대표 프로젝트 (순서대로 표시)
+   * 지정하면 이 프로젝트들을 맨 앞에 고정 노출 (선택). 비우면 최신순으로 채워집니다.
    */
   featuredProjects?: (number | Project)[] | null;
+  /**
+   * 홈에 표시할 포트폴리오 개수 — 프로젝트+수상·활동을 최신순으로 (0이면 숨김)
+   */
+  portfolioLimit?: number | null;
   /**
    * 홈에 표시할 최근 글 개수 (0이면 숨김)
    */
@@ -892,6 +896,7 @@ export interface HomeSelect<T extends boolean = true> {
   heroTitle?: T;
   heroSubtitle?: T;
   featuredProjects?: T;
+  portfolioLimit?: T;
   recentPostsLimit?: T;
   updatedAt?: T;
   createdAt?: T;
