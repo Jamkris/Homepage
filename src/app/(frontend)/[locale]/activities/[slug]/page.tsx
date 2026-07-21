@@ -7,7 +7,7 @@ import { CertificateViewer } from '@/components/CertificateViewer'
 import { RichText } from '@/components/RichText'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatMonth } from '@/lib/format'
+import { formatFullDate } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
 import type { Activity } from '@/payload-types'
@@ -67,11 +67,11 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
 
   const period =
     activity.startDate &&
-    `${formatMonth(locale, activity.startDate)}${
+    `${formatFullDate(locale, activity.startDate)}${
       activity.ongoing
-        ? ` — ${tCommon('present')}`
+        ? ` ~ ${tCommon('present')}`
         : activity.endDate
-          ? ` — ${formatMonth(locale, activity.endDate)}`
+          ? ` ~ ${formatFullDate(locale, activity.endDate)}`
           : ''
     }`
 
@@ -106,6 +106,25 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
               </li>
             ))}
           </ul>
+        )}
+        {activity.references && activity.references.length > 0 && (
+          <dl className="mt-5 space-y-1.5">
+            {activity.references.map((ref) => (
+              <div key={ref.id ?? ref.url} className="flex flex-wrap gap-x-2 text-sm">
+                <dt className="font-mono text-muted">{ref.label}:</dt>
+                <dd>
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent break-all underline underline-offset-4"
+                  >
+                    {ref.url}
+                  </a>
+                </dd>
+              </div>
+            ))}
+          </dl>
         )}
       </header>
 

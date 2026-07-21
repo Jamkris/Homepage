@@ -6,7 +6,7 @@ import React from 'react'
 import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
-import { formatMonth } from '@/lib/format'
+import { formatFullDate } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates, mediaImageUrl } from '@/lib/seo'
 import type { Project } from '@/payload-types'
@@ -71,8 +71,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const period =
     project.startedAt &&
-    `${formatMonth(locale, project.startedAt)} — ${
-      project.endedAt ? formatMonth(locale, project.endedAt) : tCommon('present')
+    `${formatFullDate(locale, project.startedAt)} ~ ${
+      project.endedAt ? formatFullDate(locale, project.endedAt) : tCommon('present')
     }`
 
   return (

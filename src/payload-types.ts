@@ -331,6 +331,16 @@ export interface Activity {
    * 내가 맡았던 부분 등 (예: APP, WEB, INFRA)
    */
   tags?: string[] | null;
+  /**
+   * Key: Value 형식의 참조 링크 (예: GitHub → https://...)
+   */
+  references?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   organization?: string | null;
   /**
    * 이미지 또는 PDF 업로드 — 사이트에서 뷰어로 바로 열립니다 (수상 시)
@@ -593,6 +603,13 @@ export interface ActivitiesSelect<T extends boolean = true> {
   ongoing?: T;
   endDate?: T;
   tags?: T;
+  references?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
   organization?: T;
   attachment?: T;
   content?: T;

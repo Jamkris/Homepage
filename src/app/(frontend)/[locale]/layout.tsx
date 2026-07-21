@@ -9,7 +9,6 @@ import React from 'react'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Cursor } from '@/components/fx/Cursor'
-import { SmoothScroll } from '@/components/fx/SmoothScroll'
 import { routing } from '@/i18n/routing'
 import { SERVER_URL } from '@/lib/seo'
 
@@ -67,7 +66,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <body className="flex min-h-screen flex-col">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <NextIntlClientProvider>
-            <SmoothScroll />
             <Cursor />
             <Header />
             <main className="flex-1">{children}</main>

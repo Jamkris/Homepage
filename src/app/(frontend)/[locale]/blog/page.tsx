@@ -3,7 +3,6 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import React from 'react'
 
 import { PostCard } from '@/components/PostCard'
-import { Reveal } from '@/components/fx/Reveal'
 import type { Locale } from '@/i18n/routing'
 import { getPayloadClient } from '@/lib/payload'
 import { localeAlternates } from '@/lib/seo'
@@ -51,9 +50,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
       ) : (
         <div className="mt-12">
           {posts.map((post, i) => (
-            <Reveal key={post.id} delay={Math.min(i * 0.04, 0.3)}>
-              <PostCard post={post} locale={locale} index={i} />
-            </Reveal>
+            <PostCard key={post.id} post={post} locale={locale} index={i} />
           ))}
           <div className="border-border border-t" />
         </div>

@@ -9,6 +9,7 @@ import { ProjectCard } from '@/components/ProjectCard'
 import { SectionHeading } from '@/components/SectionHeading'
 import { LocalTime } from '@/components/fx/LocalTime'
 import { Reveal } from '@/components/fx/Reveal'
+import { SmoothScroll } from '@/components/fx/SmoothScroll'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getPayloadClient } from '@/lib/payload'
@@ -86,6 +87,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <div>
+      <SmoothScroll />
       {/* Hero */}
       <section className="relative flex min-h-[calc(100svh-3.5rem)] items-center overflow-hidden sm:min-h-[calc(100svh-4rem)]">
         <div

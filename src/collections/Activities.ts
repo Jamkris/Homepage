@@ -77,6 +77,28 @@ export const Activities: CollectionConfig = {
       },
     },
     {
+      name: 'references',
+      type: 'array',
+      label: { ko: '참조 링크', en: 'References' },
+      admin: {
+        description: 'Key: Value 형식의 참조 링크 (예: GitHub → https://...)',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          label: { ko: '이름 (Key)', en: 'Label (Key)' },
+          required: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: { ko: '주소 (Value)', en: 'URL (Value)' },
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'organization',
       type: 'text',
       label: { ko: '주최/수여 기관', en: 'Organization' },
