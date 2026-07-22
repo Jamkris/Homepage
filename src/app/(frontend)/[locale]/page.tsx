@@ -154,16 +154,16 @@ export default async function HomePage({ params }: HomePageProps) {
             <Reveal delay={0.4}>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/portfolio"
+                  href="/about"
                   className="font-mono border-accent/50 hover:border-accent bg-accent/5 hover:bg-accent/10 rounded-lg border px-6 py-3.5 text-sm transition-colors"
                 >
-                  {t('viewWork')} →
+                  {t('aboutMe')} →
                 </Link>
                 <Link
-                  href="/about"
+                  href="/portfolio"
                   className="font-mono text-muted hover:text-foreground px-3 py-3.5 text-sm transition-colors"
                 >
-                  {t('aboutMe')} ↗
+                  {t('viewWork')} ↗
                 </Link>
               </div>
             </Reveal>
