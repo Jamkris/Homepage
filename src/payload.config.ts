@@ -15,6 +15,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { editorBlocks } from './blocks/editorBlocks'
+import { MarkdownTextFormatFeature } from './features/markdownTextFormat/feature.server'
 import { migrations } from './migrations'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -56,6 +57,7 @@ export default buildConfig({
       ...defaultFeatures,
       TableFeature(),
       HorizontalRuleFeature(),
+      MarkdownTextFormatFeature(),
       // callout / video / file blocks — appear in the "/" menu
       BlocksFeature({ blocks: editorBlocks }),
       // Replaces the default upload feature; adds a display-size picker to
