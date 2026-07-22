@@ -8,7 +8,8 @@
   "common": {
     "readMore": "Read more",
     "viewAll": "View all",
-    "present": "Present"
+    "present": "Present",
+    "scrollHint": "scroll"
   },
   "home": {
     "greeting": "Hello! I'm",
@@ -28,7 +29,11 @@
     "contactTitle": "Let's get in touch",
     "contactSub": "Projects, collaborations, coffee chats — all welcome.",
     "getInTouch": "Get in touch",
-    "openTo": "Open to new opportunities"
+    "openTo": "Open to new opportunities",
+    "projectsLabel": "Projects",
+    "projectsTitle": "Projects",
+    "awardsLabel": "Awards & Activities",
+    "awardsTitle": "Awards & Activities"
   },
   "blog": {
     "title": "Blog",

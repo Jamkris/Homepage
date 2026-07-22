@@ -4,7 +4,7 @@ import React from 'react'
 
 import { MediaImage } from '@/components/MediaImage'
 import { ContactForm } from '@/components/ContactForm'
-import { PortfolioCard, type PortfolioCardItem } from '@/components/PortfolioCard'
+import { CardScroller, type ScrollCardItem } from '@/components/CardScroller'
 import { PostCard } from '@/components/PostCard'
 import { SectionHeading } from '@/components/SectionHeading'
 import { LocalTime } from '@/components/fx/LocalTime'
@@ -50,36 +50,14 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const portfolioLimit = home.portfolioLimit ?? 4
 
-  const projectToItem = (project: Project): PortfolioCardItem & { dateMs: number } => ({
-    key: `project-${project.id}`,
-    href: `/portfolio/${project.slug}`,
-    title: project.title,
-    summary: project.summary,
-    typeLabel: tPortfolio(`categories.${project.category}`),
-    dateLabel: formatMonth(locale, project.startedAt),
-    dateMs: project.startedAt ? new Date(project.startedAt).getTime() : Number.NEGATIVE_INFINITY,
-    ongoing: Boolean(project.startedAt && !project.endedAt),
-  })
-
-  // Optional pinned projects go first; the rest fills with the newest merged items
-  const pinnedItems =
-    portfolioLimit > 0
-      ? (home.featuredProjects ?? [])
-          .filter(
-            (project): project is Project =>
-              typeof project === 'object' && project._status === 'published',
-          )
-          .map(projectToItem)
-      : []
-
   const [latestProjects, latestActivities] =
     portfolioLimit > 0
       ? await Promise.all([
           payload.find({
             collection: 'projects',
             locale,
-            limit: portfolioLimit + pinnedItems.length,
-            depth: 1,
+            limit: portfolioLimit,
+            depth: 0,
             sort: '-startedAt',
             where: { _status: { equals: 'published' } },
           }),
@@ -87,35 +65,34 @@ export default async function HomePage({ params }: HomePageProps) {
             collection: 'activities',
             locale,
             limit: portfolioLimit,
-            depth: 1,
+            depth: 0,
             sort: '-startDate',
             where: { _status: { equals: 'published' } },
           }),
         ])
       : [{ docs: [] }, { docs: [] }]
 
-  const pinnedKeys = new Set(pinnedItems.map((item) => item.key))
-  const mergedRest = [
-    ...latestProjects.docs.map(projectToItem),
-    ...latestActivities.docs
-      .filter((activity) => activity.slug)
-      .map((activity): PortfolioCardItem & { dateMs: number } => ({
-        key: `activity-${activity.id}`,
-        href: `/activities/${activity.slug}`,
-        title: activity.title,
-        summary: richTextToPlainText(activity.content) || activity.organization,
-        typeLabel: tAbout(`activityType.${activity.type}`),
-        dateLabel: formatMonth(locale, activity.startDate),
-        dateMs: activity.startDate
-          ? new Date(activity.startDate).getTime()
-          : Number.NEGATIVE_INFINITY,
-        ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
-      })),
-  ]
-    .filter((item) => !pinnedKeys.has(item.key))
-    .sort((a, b) => b.dateMs - a.dateMs)
+  const projectCards: ScrollCardItem[] = latestProjects.docs.map((project) => ({
+    key: `project-${project.id}`,
+    href: `/portfolio/${project.slug}`,
+    title: project.title,
+    summary: project.summary,
+    typeLabel: tPortfolio(`categories.${project.category}`),
+    dateLabel: formatMonth(locale, project.startedAt),
+    ongoing: Boolean(project.startedAt && !project.endedAt),
+  }))
 
-  const portfolioItems = [...pinnedItems, ...mergedRest].slice(0, portfolioLimit)
+  const activityCards: ScrollCardItem[] = latestActivities.docs
+    .filter((activity) => activity.slug)
+    .map((activity) => ({
+      key: `activity-${activity.id}`,
+      href: `/activities/${activity.slug}`,
+      title: activity.title,
+      summary: richTextToPlainText(activity.content) || activity.organization,
+      typeLabel: tAbout(`activityType.${activity.type}`),
+      dateLabel: formatMonth(locale, activity.startDate),
+      ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
+    }))
 
   const recentPostsLimit = home.recentPostsLimit ?? 3
   const { docs: recentPosts } =
@@ -239,13 +216,13 @@ export default async function HomePage({ params }: HomePageProps) {
         </section>
       )}
 
-      {/* Portfolio — latest projects + activities merged */}
-      {portfolioItems.length > 0 && (
+      {/* Projects */}
+      {projectCards.length > 0 && (
         <section className="border-border border-t">
           <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
             <Reveal>
               <div className="flex items-end justify-between">
-                <SectionHeading label={t('featuredLabel')} title={t('featured')} />
+                <SectionHeading label={t('projectsLabel')} title={t('projectsTitle')} />
                 <Link
                   href="/portfolio"
                   className="text-muted hover:text-accent mb-1 hidden text-sm transition-colors sm:block"
@@ -253,14 +230,36 @@ export default async function HomePage({ params }: HomePageProps) {
                   {tCommon('viewAll')} →
                 </Link>
               </div>
+              <CardScroller
+                items={projectCards}
+                readMoreLabel={tCommon('readMore')}
+                scrollHint={tCommon('scrollHint')}
+              />
             </Reveal>
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {portfolioItems.map((item, i) => (
-                <Reveal key={item.key} delay={i * 0.08}>
-                  <PortfolioCard item={item} ongoingLabel={tPortfolio('ongoing')} />
-                </Reveal>
-              ))}
-            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Awards & Activities */}
+      {activityCards.length > 0 && (
+        <section className="border-border border-t">
+          <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
+            <Reveal>
+              <div className="flex items-end justify-between">
+                <SectionHeading label={t('awardsLabel')} title={t('awardsTitle')} />
+                <Link
+                  href="/about"
+                  className="text-muted hover:text-accent mb-1 hidden text-sm transition-colors sm:block"
+                >
+                  {tCommon('viewAll')} →
+                </Link>
+              </div>
+              <CardScroller
+                items={activityCards}
+                readMoreLabel={tCommon('readMore')}
+                scrollHint={tCommon('scrollHint')}
+              />
+            </Reveal>
           </div>
         </section>
       )}

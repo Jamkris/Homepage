@@ -8,7 +8,8 @@
   "common": {
     "readMore": "더 보기",
     "viewAll": "전체 보기",
-    "present": "현재"
+    "present": "현재",
+    "scrollHint": "좌우로 넘기기"
   },
   "home": {
     "greeting": "안녕하세요! 저는",
@@ -28,7 +29,11 @@
     "contactTitle": "언제든 연락 주세요",
     "contactSub": "프로젝트, 협업, 커피챗 — 무엇이든 환영이에요.",
     "getInTouch": "메일 보내기",
-    "openTo": "새로운 기회에 열려 있어요"
+    "openTo": "새로운 기회에 열려 있어요",
+    "projectsLabel": "Projects",
+    "projectsTitle": "프로젝트",
+    "awardsLabel": "Awards & Activities",
+    "awardsTitle": "수상 · 활동"
   },
   "blog": {
     "title": "블로그",

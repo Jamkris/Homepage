@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import React from 'react'
 
+import { CardScroller, type ScrollCardItem } from '@/components/CardScroller'
 import { CertificateViewer } from '@/components/CertificateViewer'
 import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
@@ -41,7 +42,9 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const tCommon = await getTranslations('common')
   const payload = await getPayloadClient()
 
-  const [about, activitiesResult] = await Promise.all([
+  const tPortfolio = await getTranslations('portfolio')
+
+  const [about, activitiesResult, projectsResult] = await Promise.all([
     payload.findGlobal({ slug: 'about', locale, depth: 1 }),
     payload.find({
       collection: 'activities',
@@ -49,6 +52,14 @@ export default async function AboutPage({ params }: AboutPageProps) {
       depth: 1,
       limit: 100,
       sort: '-startDate',
+      where: { _status: { equals: 'published' } },
+    }),
+    payload.find({
+      collection: 'projects',
+      locale,
+      depth: 0,
+      limit: 100,
+      sort: '-startedAt',
       where: { _status: { equals: 'published' } },
     }),
   ])
@@ -60,10 +71,38 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const flatSkills = about.skills ?? []
   const currentJob = experiences.find((exp) => !exp.endDate)
 
+  const projectCards: ScrollCardItem[] = projectsResult.docs.map((project) => ({
+    key: `project-${project.id}`,
+    href: `/portfolio/${project.slug}`,
+    title: project.title,
+    summary: project.summary,
+    typeLabel: tPortfolio(`categories.${project.category}`),
+    dateLabel: formatMonth(locale, project.startedAt),
+    ongoing: Boolean(project.startedAt && !project.endedAt),
+  }))
+
+  const activityCards: ScrollCardItem[] = activities
+    .filter((activity) => activity.slug)
+    .map((activity) => ({
+      key: `activity-${activity.id}`,
+      href: `/activities/${activity.slug}`,
+      title: activity.title,
+      summary: richTextToPlainText(activity.content) || activity.organization,
+      typeLabel: t(`activityType.${activity.type}`),
+      dateLabel: `${formatMonth(locale, activity.startDate)}${
+        activity.ongoing
+          ? ` ~ ${tCommon('present')}`
+          : activity.endDate
+            ? ` ~ ${formatMonth(locale, activity.endDate)}`
+            : ''
+      }`,
+      ongoing: Boolean(activity.startDate && !activity.endDate && activity.ongoing),
+    }))
+
   const metaRows: MetaRow[] = [
     about.location ? { label: t('basedIn'), value: about.location } : null,
     currentJob
-      ? { label: t('currently'), value: `${currentJob.role} @ ${currentJob.company}` }
+      ? { label: t('currently'), value: `${currentJob.company} · ${currentJob.role}` }
       : null,
     about.studying ? { label: t('studying'), value: about.studying } : null,
     about.focus ? { label: t('focus'), value: about.focus } : null,
@@ -202,71 +241,29 @@ export default async function AboutPage({ params }: AboutPageProps) {
         </section>
       )}
 
+      {/* Projects — horizontal scrolling cards */}
+      {projectCards.length > 0 && (
+        <section className="border-border mt-16 border-t pt-14">
+          <h2 className="eyebrow">Portfolio</h2>
+          <h3 className="mt-4 text-2xl font-bold tracking-tight">{tPortfolio('title')}</h3>
+          <CardScroller
+            items={projectCards}
+            readMoreLabel={tCommon('readMore')}
+            scrollHint={t('scrollHint')}
+          />
+        </section>
+      )}
+
       {/* Awards & Activities — horizontal scrolling cards */}
-      {activities.length > 0 && (
+      {activityCards.length > 0 && (
         <section className="border-border mt-16 border-t pt-14">
           <h2 className="eyebrow">{t('awards')}</h2>
           <h3 className="mt-4 text-2xl font-bold tracking-tight">{t('awardsTitle')}</h3>
-
-          <div className="mt-8 flex snap-x gap-4 overflow-x-auto pb-4">
-            {activities.map((activity) => {
-              const excerpt = richTextToPlainText(activity.content) || activity.organization || ''
-              const card = (
-                <div className="border-border bg-surface/40 group-hover:border-accent/50 flex h-full flex-col rounded-xl border p-5 transition-colors">
-                  <p className="font-mono text-muted text-xs tabular-nums">
-                    {formatMonth(locale, activity.startDate)}
-                    {activity.ongoing
-                      ? ` ~ ${tCommon('present')}`
-                      : activity.endDate
-                        ? ` ~ ${formatMonth(locale, activity.endDate)}`
-                        : ''}
-                  </p>
-                  <h4 className="group-hover:text-accent mt-3 text-lg font-bold tracking-tight transition-colors">
-                    {activity.title}
-                  </h4>
-                  {excerpt && (
-                    <p className="text-muted mt-2 line-clamp-3 flex-1 text-sm leading-relaxed">
-                      {excerpt}
-                    </p>
-                  )}
-                  {activity.tags && activity.tags.length > 0 && (
-                    <ul className="mt-3 flex flex-wrap gap-1.5">
-                      {activity.tags.map((tag) => (
-                        <li
-                          key={tag}
-                          className="font-mono text-accent bg-accent/10 rounded px-2 py-0.5 text-xs"
-                        >
-                          #{tag}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {activity.slug && (
-                    <span className="text-accent mt-4 inline-block text-sm">
-                      → {tCommon('readMore')}
-                    </span>
-                  )}
-                </div>
-              )
-
-              return activity.slug ? (
-                <Link
-                  key={activity.id}
-                  href={`/activities/${activity.slug}`}
-                  className="group w-[280px] shrink-0 snap-start sm:w-[320px]"
-                >
-                  {card}
-                </Link>
-              ) : (
-                <div key={activity.id} className="w-[280px] shrink-0 snap-start sm:w-[320px]">
-                  {card}
-                </div>
-              )
-            })}
-          </div>
-          <p className="font-mono text-muted mt-2 text-center text-xs tracking-wider">
-            ← {t('scrollHint')} →
-          </p>
+          <CardScroller
+            items={activityCards}
+            readMoreLabel={tCommon('readMore')}
+            scrollHint={t('scrollHint')}
+          />
         </section>
       )}
 
