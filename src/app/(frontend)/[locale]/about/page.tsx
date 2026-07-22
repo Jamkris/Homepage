@@ -153,9 +153,15 @@ export default async function AboutPage({ params }: AboutPageProps) {
         </aside>
 
         <div>
-          <h1 className="text-3xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">
-            {about.headline || about.name}
+          <h1 className="text-4xl leading-none font-bold tracking-tight sm:text-6xl">
+            {about.name}
+            <span className="text-accent">.</span>
           </h1>
+          {about.headline && (
+            <p className="mt-5 text-xl leading-snug font-medium tracking-tight text-balance sm:text-2xl">
+              {about.headline}
+            </p>
+          )}
           {about.bio && (
             <div className="mt-8">
               <RichText data={about.bio} />
