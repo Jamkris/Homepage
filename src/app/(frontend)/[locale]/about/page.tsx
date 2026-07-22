@@ -43,6 +43,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const payload = await getPayloadClient()
 
   const tPortfolio = await getTranslations('portfolio')
+  const tHome = await getTranslations('home')
 
   const [about, activitiesResult, projectsResult] = await Promise.all([
     payload.findGlobal({ slug: 'about', locale, depth: 1 }),
@@ -244,8 +245,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
       {/* Projects — horizontal scrolling cards */}
       {projectCards.length > 0 && (
         <section className="border-border mt-16 border-t pt-14">
-          <h2 className="eyebrow">Portfolio</h2>
-          <h3 className="mt-4 text-2xl font-bold tracking-tight">{tPortfolio('title')}</h3>
+          <h2 className="eyebrow">{tHome('projectsLabel')}</h2>
+          <h3 className="mt-4 text-2xl font-bold tracking-tight">{tHome('projectsTitle')}</h3>
           <CardScroller
             items={projectCards}
             readMoreLabel={tCommon('readMore')}
