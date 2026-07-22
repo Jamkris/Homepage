@@ -133,6 +133,28 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
         </figure>
       )
     },
+    Code: ({ node }: { node: { fields: { code?: string; language?: string } } }) => {
+      const { code, language } = node.fields
+      if (!code) {
+        return null
+      }
+      return (
+        <div className="not-prose my-6">
+          {language && (
+            <div className="border-border text-muted bg-surface rounded-t-lg border border-b-0 px-4 py-1.5 font-mono text-xs">
+              {language}
+            </div>
+          )}
+          <pre
+            className={`border-border bg-surface overflow-x-auto border p-4 text-sm ${
+              language ? 'rounded-b-lg' : 'rounded-lg'
+            }`}
+          >
+            <code className="font-mono">{code}</code>
+          </pre>
+        </div>
+      )
+    },
     fileDownload: ({
       node,
     }: {

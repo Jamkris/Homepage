@@ -1,4 +1,4 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { CodeBlock, lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
 // Callout — colored note box with a nested rich-text body
@@ -81,4 +81,5 @@ export const FileBlock: Block = {
   ],
 }
 
-export const editorBlocks = [CalloutBlock, VideoBlock, FileBlock]
+// Premade code block (language selector + syntax-aware editing in the admin)
+export const editorBlocks = [CalloutBlock, VideoBlock, FileBlock, CodeBlock()]
