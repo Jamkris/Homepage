@@ -690,6 +690,36 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  seo?: {
+    /**
+     * 검색에 걸리게 할 단어들 (예: 이승현, 부산소마고 이승현, 소마고 이승현, 미스고 이승현, Jamkris)
+     */
+    keywords?: string[] | null;
+    /**
+     * 네이버 서치어드바이저 사이트 소유확인 메타태그의 content 값
+     */
+    naverVerification?: string | null;
+    /**
+     * 구글 서치 콘솔 HTML 태그 소유확인의 content 값
+     */
+    googleVerification?: string | null;
+    /**
+     * 검색용 인물 구조화 데이터 — 예: 이승현
+     */
+    personName?: string | null;
+    /**
+     * 예: Seunghyun Lee, Jamkris
+     */
+    alternateNames?: string[] | null;
+    /**
+     * 예: 개발자, 소프트웨어 엔지니어
+     */
+    jobTitle?: string | null;
+    /**
+     * 예: 부산소프트웨어마이스터고등학교
+     */
+    affiliation?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -837,6 +867,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  seo?:
+    | T
+    | {
+        keywords?: T;
+        naverVerification?: T;
+        googleVerification?: T;
+        personName?: T;
+        alternateNames?: T;
+        jobTitle?: T;
+        affiliation?: T;
       };
   updatedAt?: T;
   createdAt?: T;
