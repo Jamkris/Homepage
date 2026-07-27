@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export async function generateMetadata(): Promise<Metadata> {
   const payload = await getPayloadClient()
-  const settings = await payload.findGlobal({ slug: 'site-settings' })
+  const settings = await payload.findGlobal({ slug: 'site-settings', depth: 1 })
   const seo = settings.seo ?? {}
   const siteName = settings.siteName || 'Jamkris'
   const description = settings.description || 'Seunghyun Lee (Jamkris) — portfolio and blog'
@@ -35,12 +35,17 @@ export async function generateMetadata(): Promise<Metadata> {
     other['naver-site-verification'] = seo.naverVerification
   }
 
+  const ogImage =
+    seo.defaultImage && typeof seo.defaultImage === 'object' ? seo.defaultImage.url : undefined
+  const images = ogImage ? [{ url: ogImage }] : undefined
+
   return {
     metadataBase: new URL(SERVER_URL),
     title: { default: siteName, template: `%s | ${siteName}` },
     description,
     keywords: keywords.length ? keywords : undefined,
-    openGraph: { siteName, type: 'website' },
+    openGraph: { siteName, type: 'website', images },
+    twitter: images ? { card: 'summary_large_image', images } : undefined,
     verification: seo.googleVerification ? { google: seo.googleVerification } : undefined,
     other: Object.keys(other).length ? other : undefined,
   }

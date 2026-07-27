@@ -8,6 +8,7 @@ import * as migration_20260721_060000_activities_slug from './20260721_060000_ac
 import * as migration_20260721_070000_activities_references from './20260721_070000_activities_references';
 import * as migration_20260721_080000_home_portfolio_limit from './20260721_080000_home_portfolio_limit';
 import * as migration_20260727_090000_seo_fields from './20260727_090000_seo_fields';
+import * as migration_20260727_100000_seo_default_image from './20260727_100000_seo_default_image';
 
 export const migrations = [
   {
@@ -59,5 +60,10 @@ export const migrations = [
     up: migration_20260727_090000_seo_fields.up,
     down: migration_20260727_090000_seo_fields.down,
     name: '20260727_090000_seo_fields',
+  },
+  {
+    up: migration_20260727_100000_seo_default_image.up,
+    down: migration_20260727_100000_seo_default_image.down,
+    name: '20260727_100000_seo_default_image',
   },
 ];

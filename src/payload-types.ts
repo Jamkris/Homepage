@@ -692,6 +692,10 @@ export interface SiteSetting {
     | null;
   seo?: {
     /**
+     * SNS·검색 공유 시 표시되는 기본 대표 이미지. 권장 1200×630. 글에 커버 이미지가 있으면 그게 우선.
+     */
+    defaultImage?: (number | null) | Media;
+    /**
      * 검색에 걸리게 할 단어들 (예: 이승현, 부산소마고 이승현, 소마고 이승현, 미스고 이승현, Jamkris)
      */
     keywords?: string[] | null;
@@ -871,6 +875,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   seo?:
     | T
     | {
+        defaultImage?: T;
         keywords?: T;
         naverVerification?: T;
         googleVerification?: T;

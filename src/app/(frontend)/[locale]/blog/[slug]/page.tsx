@@ -8,7 +8,7 @@ import { RichText } from '@/components/RichText'
 import type { Locale } from '@/i18n/routing'
 import { formatDate } from '@/lib/format'
 import { getPayloadClient } from '@/lib/payload'
-import { localeAlternates, mediaImageUrl } from '@/lib/seo'
+import { getDefaultOgImage, localeAlternates, mediaImageUrl } from '@/lib/seo'
 import type { Post } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
@@ -43,7 +43,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 
   const title = post.meta?.title || post.title
   const description = post.meta?.description || post.excerpt || undefined
-  const image = mediaImageUrl(post.meta?.image) ?? mediaImageUrl(post.coverImage)
+  const image =
+    mediaImageUrl(post.meta?.image) ?? mediaImageUrl(post.coverImage) ?? (await getDefaultOgImage())
 
   return {
     title,

@@ -58,6 +58,16 @@ export const SiteSettings: GlobalConfig = {
       label: { ko: 'SEO / 검색 최적화', en: 'SEO' },
       fields: [
         {
+          name: 'defaultImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: { ko: '기본 공유 이미지 (OG)', en: 'Default share image (OG)' },
+          admin: {
+            description:
+              'SNS·검색 공유 시 표시되는 기본 대표 이미지. 권장 1200×630. 글에 커버 이미지가 있으면 그게 우선.',
+          },
+        },
+        {
           name: 'keywords',
           type: 'text',
           hasMany: true,
