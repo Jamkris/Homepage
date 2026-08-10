@@ -38,33 +38,16 @@ export const Posts: CollectionConfig = {
       },
     },
     {
-      name: 'coverImage',
-      type: 'upload',
-      label: { ko: '커버 이미지', en: 'Cover image' },
-      relationTo: 'media',
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      label: { ko: '본문', en: 'Content' },
-      required: true,
-      localized: true,
-    },
-    {
       name: 'tags',
       type: 'text',
       label: { ko: '태그', en: 'Tags' },
       hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'publishedAt',
       type: 'date',
       label: { ko: '발행일', en: 'Published at' },
       admin: {
-        position: 'sidebar',
         date: {
           pickerAppearance: 'dayAndTime',
         },
@@ -80,6 +63,19 @@ export const Posts: CollectionConfig = {
           },
         ],
       },
+    },
+    {
+      name: 'coverImage',
+      type: 'upload',
+      label: { ko: '커버 이미지', en: 'Cover image' },
+      relationTo: 'media',
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      label: { ko: '본문', en: 'Content' },
+      required: true,
+      localized: true,
     },
   ],
 }

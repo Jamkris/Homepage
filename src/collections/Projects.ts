@@ -64,12 +64,6 @@ export const Projects: CollectionConfig = {
       },
     },
     {
-      name: 'description',
-      type: 'richText',
-      label: { ko: '상세 설명', en: 'Description' },
-      localized: true,
-    },
-    {
       name: 'coverImage',
       type: 'upload',
       label: { ko: '커버 이미지', en: 'Cover image' },
@@ -99,6 +93,12 @@ export const Projects: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    {
+      name: 'description',
+      type: 'richText',
+      label: { ko: '상세 설명', en: 'Description' },
+      localized: true,
     },
     {
       name: 'startedAt',
