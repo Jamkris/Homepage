@@ -202,8 +202,8 @@ export default async function HomePage({ params }: HomePageProps) {
                 {currentJob.company}{' '}
                 <span className="text-muted font-normal">· {currentJob.role}</span>
               </p>
-              {currentJob.description && (
-                <p className="text-muted mt-3 max-w-2xl">{currentJob.description}</p>
+              {currentJob.summary && (
+                <p className="text-muted mt-3 max-w-2xl">{currentJob.summary}</p>
               )}
               <Link
                 href="/about"

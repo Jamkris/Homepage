@@ -7,6 +7,7 @@
   },
   "common": {
     "readMore": "Read more",
+    "showLess": "Show less",
     "viewAll": "View all",
     "present": "Present",
     "scrollHint": "scroll"

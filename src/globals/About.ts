@@ -138,9 +138,20 @@ export const About: GlobalConfig = {
           },
         },
         {
-          name: 'description',
+          name: 'summary',
           type: 'textarea',
-          label: { ko: '설명', en: 'Description' },
+          label: { ko: '간략 소개', en: 'Summary' },
+          admin: {
+            description: '홈과 소개 페이지에 항상 보이는 짧은 설명',
+          },
+        },
+        {
+          name: 'detail',
+          type: 'textarea',
+          label: { ko: '상세 설명', en: 'Detail' },
+          admin: {
+            description: '소개 페이지에서만 표시 — 길면 접었다 펼 수 있습니다',
+          },
         },
       ],
     },

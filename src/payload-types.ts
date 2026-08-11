@@ -215,6 +215,8 @@ export interface Post {
    * 목록과 SEO 설명에 사용되는 짧은 요약
    */
   excerpt?: string | null;
+  tags?: string[] | null;
+  publishedAt?: string | null;
   coverImage?: (number | null) | Media;
   content: {
     root: {
@@ -231,8 +233,6 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  tags?: string[] | null;
-  publishedAt?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -265,6 +265,15 @@ export interface Project {
    * 카드에 표시되는 한 줄 요약
    */
   summary: string;
+  coverImage?: (number | null) | Media;
+  techStack?: string[] | null;
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   description?: {
     root: {
       type: string;
@@ -280,15 +289,6 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
-  coverImage?: (number | null) | Media;
-  techStack?: string[] | null;
-  links?:
-    | {
-        label: string;
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
   startedAt?: string | null;
   /**
    * 진행 중이면 비워두세요
@@ -543,10 +543,10 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
-  coverImage?: T;
-  content?: T;
   tags?: T;
   publishedAt?: T;
+  coverImage?: T;
+  content?: T;
   meta?:
     | T
     | {
@@ -568,7 +568,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   category?: T;
   featured?: T;
   summary?: T;
-  description?: T;
   coverImage?: T;
   techStack?: T;
   links?:
@@ -578,6 +577,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  description?: T;
   startedAt?: T;
   endedAt?: T;
   meta?:
@@ -788,7 +788,14 @@ export interface About {
          * 재직 중이면 비워두세요
          */
         endDate?: string | null;
-        description?: string | null;
+        /**
+         * 홈과 소개 페이지에 항상 보이는 짧은 설명
+         */
+        summary?: string | null;
+        /**
+         * 소개 페이지에서만 표시 — 길면 접었다 펼 수 있습니다
+         */
+        detail?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -917,7 +924,8 @@ export interface AboutSelect<T extends boolean = true> {
         role?: T;
         startDate?: T;
         endDate?: T;
-        description?: T;
+        summary?: T;
+        detail?: T;
         id?: T;
       };
   certifications?:

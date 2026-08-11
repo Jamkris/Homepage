@@ -4,6 +4,7 @@ import React from 'react'
 
 import { CardScroller, type ScrollCardItem } from '@/components/CardScroller'
 import { CertificateViewer } from '@/components/CertificateViewer'
+import { ExpandableText } from '@/components/ExpandableText'
 import { MediaImage } from '@/components/MediaImage'
 import { RichText } from '@/components/RichText'
 import { Link } from '@/i18n/navigation'
@@ -187,8 +188,16 @@ export default async function AboutPage({ params }: AboutPageProps) {
                     {exp.endDate ? formatMonth(locale, exp.endDate) : tCommon('present')}
                   </p>
                 </div>
-                {exp.description && (
-                  <p className="text-muted mt-2 text-sm whitespace-pre-line">{exp.description}</p>
+                {exp.summary && (
+                  <p className="text-muted mt-2 text-sm whitespace-pre-line">{exp.summary}</p>
+                )}
+                {exp.detail && (
+                  <ExpandableText
+                    text={exp.detail}
+                    moreLabel={tCommon('readMore')}
+                    lessLabel={tCommon('showLess')}
+                    className="mt-2"
+                  />
                 )}
               </li>
             ))}

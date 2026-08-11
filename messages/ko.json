@@ -7,6 +7,7 @@
   },
   "common": {
     "readMore": "더 보기",
+    "showLess": "접기",
     "viewAll": "전체 보기",
     "present": "현재",
     "scrollHint": "좌우로 넘기기"
